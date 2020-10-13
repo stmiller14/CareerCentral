@@ -30,6 +30,7 @@ def get_career(url, role):
 
 def getrole_career(role, location):
     result={}
+    
     if "," in location:
         location=location.split(',')
         if len(location)>=2:
@@ -38,17 +39,22 @@ def getrole_career(role, location):
     url= 'https://www.careerbuilder.com/jobs?utf8=✓&keywords='+role+'&location='+location+'&page_number='
     threads= [ Thread(target=get_career, args=( url +str(n) , role  ),daemon=True) for n in range(1, 30)]
     threads.append(Thread(target=get_career,  args=( url_first , role   ),daemon=True))
+
     for t in threads:
         t.start()
     for t in threads:
         t.join()
    
-
+    print(alldata)
     #cleaning the data
     for k, v in alldata.items():
         if v not in result.values():
             result[k]=v 
     alldata.clear()
+    print(result)
     return result
 
-#getrole_career('python', 'new york')
+
+if __name__ == "__main__":
+    getrole_career('python', 'new york')
+    

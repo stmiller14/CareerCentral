@@ -27,9 +27,10 @@ def index(request):
         elif 'monster.x' in resp.keys():
             ret=run(async_monster.getrole_monster(role, location)).values()
         elif 'career.x' in resp.keys():
-            ret=list(multiprocess_simply.getrole_simply(role,location).values())
-        elif 'glass.x' in resp.keys():
             ret=list( builder.getrole_career(role,location).values()  )
+        elif 'glass.x' in resp.keys():
+            ret=list(multiprocess_simply.getrole_simply(role,location).values())
+            
         return render(request, 'index.html', {'results': ret}  )
     else:
         return render(request, 'index.html')

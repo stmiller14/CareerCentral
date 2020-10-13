@@ -37,6 +37,7 @@ def get_simply(url, role ):
       
 ## scrape through 11 pages of simply using a multi processing for each I/O (4x faster)
 def getrole_simply(role, location):
+    print("in simply ")
     test_data ={} 
     if "," in location:
         location=location.split(',')
@@ -57,5 +58,10 @@ def getrole_simply(role, location):
                 test_data[key]= value 
     return test_data
 
+'''
 process = psutil.Process(getpid())
 print('total memory usage: ' , process.memory_info().rss , psutil.cpu_percent())  # in bytes 
+
+'''
+if __name__ == "__main__":
+    getrole_simply('python', 'new york')
