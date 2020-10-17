@@ -1,0 +1,79 @@
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Career Central</title>
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+     <script type="text/javascript"></script>
+  </head>
+
+<script>
+function delete_jobs(){
+  $(".table").on('click','.delete_button',function(){
+    var role_name= $(this).closest("tr").find('td:first').text(); //role is the first col
+    var link = $(this).closest("tr").find('a').attr("href"); //grab link by attribute 
+    $(this).closest('tr').remove();
+      $.ajax({
+          url: "{% url 'saved_jobs' %}",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify([role_name , link ]), 
+            success: function(data) { console.log('successful server request ') ;},
+            error: function(e){ console.log('bad  server request ' + e); }
+      });
+    });  
+  }
+</script>
+
+  <body>
+   <div class="container">  
+   </div>
+   <form  role="form" name="delete_form" action="{% url 'saved_jobs' %}"   style="width:400px; margin: 0 auto;" method="post">
+    <input class="btn btn-info" type="submit" id="redirect_home" value ="Back to Job Search"  name= "redirect_home" type="button" >
+<section id="tabs" class="project-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                              <table class="table" id="table_id" cellspacing="0">
+                                    {% for  row in results %}
+                                        <tr>
+                                         {% for col in row %}                                      
+                                            {% if "http" in col %}
+                                            {% with col=col.strip%}
+                                           <td>  <a href= {{col}} id='url_link' target="_blank" >Click to apply</a> </td>
+                                           <td> <input type="button" id={{col}} class="delete_button" name="delete_job"  onclick = "delete_jobs()" value=Delete >  </td>
+                                          {%endwith%}
+                                           {%else %}   
+                                               <td>{{ col }}</td> 
+                                            {%endif%}                    
+                                          {%endfor%}                                 
+                                   {%endfor%}  
+                                 </tr>                          
+                             </table>                     
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>    
+        </form>
+  </body>
+</html>
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->

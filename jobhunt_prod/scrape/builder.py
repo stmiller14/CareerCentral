@@ -45,13 +45,11 @@ def getrole_career(role, location):
     for t in threads:
         t.join()
    
-    print(alldata)
     #cleaning the data
     for k, v in alldata.items():
         if v not in result.values():
             result[k]=v 
     alldata.clear()
-    print(result)
     return result
 
 

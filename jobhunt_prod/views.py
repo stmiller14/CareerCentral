@@ -18,10 +18,19 @@ from asyncio import run
 def index(request):
     if not request.user.is_authenticated:
         return redirect('/loginpage')
+
+        
     
     if request.method=='POST':
+        if 'rolename' not in request.POST.keys():
+            print("in request body " , json.loads(request.body))
+            return HttpResponse('')
+        print(request.POST)
         resp=request.POST
         role, location =resp['rolename'] , resp['locationname']
+        if 'redirect_save' in resp.keys():
+            results=models.fetch_saved_jobs(request.user.email)
+            return render(request, 'saved_jobs.html', {'results': results})
         if 'indeed.x' in resp.keys():
             ret=list(Indeed().getrole(role, location).values())
         elif 'monster.x' in resp.keys():
@@ -36,17 +45,6 @@ def index(request):
         return render(request, 'index.html')
 
 
-def returnyear(request, year, **kwargs):
-    models.connect()
-    return HttpResponse(' in test year %s %s ' % (year, kwargs))
-
-    '''
-    return HttpResponse (
-        json.dumps({ 
-            'year': year, 
-            'name': kwargs['name'] 
-            }))
-    '''
 
 @csrf_exempt
 def loginpage(request):
@@ -64,8 +62,47 @@ def loginpage(request):
 @csrf_exempt
 def logoutuser(request):
     logout(request)
-    print("redirecting to logout page ")
     return redirect('/loginpage' , {'error':None})
+
+
+
+
+'''
+need to get the saved jobs from DB and return in table format 
+'''
+@csrf_exempt
+def saved_jobs(request):
+    if request.method=='POST':
+        if 'redirect_home' in request.POST.keys():
+            return redirect( '/', {'user_name': User.first_name}  )
+        data= json.loads(request.body)
+        models.delete_job(request.user.email, data)
+        
+    return render(request,'saved_jobs.html')
+    
+
+@csrf_exempt
+def save_job(request):
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#########################################
+
+
 
 
 '''
@@ -77,3 +114,16 @@ def register(request):
             redirect('/')
 
 '''
+
+
+def returnyear(request, year, **kwargs):
+    
+    return HttpResponse(' in test year %s %s ' % (year, kwargs))
+
+    '''
+    return HttpResponse (
+        json.dumps({ 
+            'year': year, 
+            'name': kwargs['name'] 
+            }))
+    '''

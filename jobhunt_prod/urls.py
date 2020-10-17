@@ -21,5 +21,7 @@ urlpatterns = [
     path('<int:year>', views.returnyear , kwargs= { 'name' : 'SM'} , name="returnyear"  ), 
     path('admin/', admin.site.urls),
     path('loginpage', views.loginpage, name='loginpage'),
-    path('logout', views.logoutuser, name='logoutuser')
+    path('logout', views.logoutuser, name='logoutuser'),
+    path('saved_jobs', views.saved_jobs, name="saved_jobs"),
+    path('', views.save_job, name="save_job")
 ]

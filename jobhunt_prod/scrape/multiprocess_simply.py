@@ -15,6 +15,7 @@ import psutil
 def get_simply(url, role ):
     alldata={}
     response = get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    print('response simply ' , response )
     soup = BeautifulSoup(response.text, 'html.parser')
     content_container= soup.find_all('div', {'class': ['SerpJob-jobCard']})
     link= 'https://www.simplyhired.com'

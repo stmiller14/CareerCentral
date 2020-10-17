@@ -183,6 +183,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
        
    
        function save_check(){
+           var csrftoken = $("[name=csrfmiddlewaretoken]").val();
            var hold_data=[]; 
            var i;
            var dict={};
@@ -222,9 +223,13 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
                header_modal= " Job's Saved!      "; 
              }
              $.ajax({
-                     url: "{% url 'index' %}",
+                     url: "{% url 'save_job' %}",
                      type: "POST",
                      contentType: "application/json",
+                     
+                      headers:{
+                          "X-CSRFToken": csrftoken
+                      },
                      data: JSON.stringify(data_to_send), 
                        success: function(data) {
                            console.log('success ajax request ');

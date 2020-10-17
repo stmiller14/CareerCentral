@@ -30,7 +30,8 @@ class Indeed():
             location=location_container.attrs['data-rc-loc']
             desc_container=child_soup.find('div' , {'class' :['summary']})
             desc= desc_container.ul.li.text
-            all_data[ID]= [title , company.strip() , location ,desc,  href]
+            if  role.upper() in str(title).upper().strip():
+                all_data[ID]= [title , company.strip() , location ,desc,  href]
                 
     def getrole(self, role, location): 
         result, dups={} , set()

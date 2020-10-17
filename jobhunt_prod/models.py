@@ -1,15 +1,42 @@
 from django.db import models, connection
+from datetime import datetime
 #DB processing here 
 
 
 
-def connect():
-    with connection.cursor() as cursor:
-        cursor.execute('''select email from public."user"''' )
-        #row = cursor.fetchall()
-        row=cursor.fetchone()
-        print('row data ', row )
-        return row
+def initialize_connection():
+    return connection.cursor()
 
+def save_search( email, data):
+        cursor=initialize_connection()
+        MAX_NUM=8
+        for key, value in data.items():
+            row_data=[email, datetime.now()]
+            link="www.nodatain.com"
+            for i, col in enumerate(value):
+                if 'http' in col:
+                    link=col
+                else:
+                    row_data.append(col)
+            counter=MAX_NUM - len(value)
+            while  counter>0:
+                row_data.append('')
+                counter -=1
 
+            row_data.append(link)
+            save_search_query = """INSERT INTO public."jobs" (email ,  datetime , role , description , location,  company , link, junk , junk2, junk3) VALUES (%s,%s,%s, %s, %s,%s,%s, %s,%s ,%s)""" 
 
+            
+            row_data=tuple(row_data)
+            cursor.execute(save_search_query, row_data)
+            cursor.conn.commit()
+
+def fetch_saved_jobs(email):
+    cursor=initialize_connection()
+    cursor.execute('''select  distinct  role , description , location,  company , link, junk , junk2, junk3 from public."jobs" where email = %s''', (email, ))
+    return list(cursor.fetchall()) 
+
+def delete_job( email , data):
+    cursor=initialize_connection()
+    cursor.execute(""" delete from public."jobs"  where email  =  %s and junk3 = %s""" , (email, data[1] ))
+    connection.commit()
