@@ -92,6 +92,8 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         #UserName{
           color:white;
         }
+        #modal_body{
+        white-space: pre-line ;}
   
 
 
@@ -197,7 +199,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
                var row_data=[];
                var row = $(this).closest("tr")[0]; //sending html data of the row of specific checkbox
                var role_name= row.cells[0].innerHTML;
-     
+            
              for (i = 0; i < row.cells.length -1; i++) {
                  if (row.cells[i].innerHTML.includes('href') ) {
                      row_data.push(dict[$(this).closest("tr").index()]);
@@ -208,7 +210,10 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
                  }
              }
              data_to_send[index]=row_data;
-             hold_title.push(role_name )
+             role_name=role_name.replaceAll(",","");
+
+             hold_title.push(role_name +"\n")
+ 
              
                });
 
@@ -220,7 +225,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
              else{
 
                modal_text=  hold_title; 
-               header_modal= " Job's Saved!      "; 
+               header_modal= " Jobs Saved!      "; 
              }
              $.ajax({
                      url: "{% url 'save_job' %}",
@@ -355,7 +360,10 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         <div>  </div>
         
         <button class="btn btn-info" id="save_item" value ="save_item"  name= "save_item" type="button" onclick= "save_check()">Save Searches</button>
-        <input class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" type="button" >
+        <a  href="/saved_jobs"  class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" > Saved Jobs</a>
+         <!--   <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
+        <input class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" type="button" > -->
+        
         
         
             

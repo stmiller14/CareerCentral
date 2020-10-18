@@ -29,7 +29,7 @@ def save_search( email, data):
             
             row_data=tuple(row_data)
             cursor.execute(save_search_query, row_data)
-            cursor.conn.commit()
+            connection.commit()
 
 def fetch_saved_jobs(email):
     cursor=initialize_connection()

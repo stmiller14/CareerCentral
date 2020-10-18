@@ -23,14 +23,11 @@ def index(request):
     
     if request.method=='POST':
         if 'rolename' not in request.POST.keys():
-            print("in request body " , json.loads(request.body))
+            models.save_search(request.user.email, json.loads(request.body))
             return HttpResponse('')
         print(request.POST)
         resp=request.POST
         role, location =resp['rolename'] , resp['locationname']
-        if 'redirect_save' in resp.keys():
-            results=models.fetch_saved_jobs(request.user.email)
-            return render(request, 'saved_jobs.html', {'results': results})
         if 'indeed.x' in resp.keys():
             ret=list(Indeed().getrole(role, location).values())
         elif 'monster.x' in resp.keys():
@@ -72,13 +69,17 @@ need to get the saved jobs from DB and return in table format
 '''
 @csrf_exempt
 def saved_jobs(request):
-    if request.method=='POST':
+    if request.method=='GET':
+        results=models.fetch_saved_jobs(request.user.email)
+        return render(request, 'saved_jobs.html', {'results': results})
+    elif request.method=='POST':
         if 'redirect_home' in request.POST.keys():
             return redirect( '/', {'user_name': User.first_name}  )
         data= json.loads(request.body)
         models.delete_job(request.user.email, data)
         
     return render(request,'saved_jobs.html')
+
     
 
 @csrf_exempt
