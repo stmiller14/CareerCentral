@@ -94,7 +94,13 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         }
         #modal_body{
         white-space: pre-line ;}
-  
+  #content{
+    float: center; margin:10px; 
+  }
+
+  .btn{
+    margin:10px;
+  }
 
 
 </style>
@@ -185,12 +191,12 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
        
    
        function save_check(){
+        role_names="";
            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
            var hold_data=[]; 
            var i;
            var dict={};
            var data_to_send ={};
-           var hold_title=[];
            modal_text="";
            $('.table a').each(function(index ) {
              dict[index]=$(this).attr('href'); });
@@ -211,20 +217,15 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
              }
              data_to_send[index]=row_data;
              role_name=role_name.replaceAll(",","");
-
-             hold_title.push(role_name +"\n")
- 
+             role_names=role_names +"\n" + role_name 
              
                });
-
-             if (hold_title.length == 0 ) {
-                 modal_text="No Job's Saved";
-                 header_modal= ""; 
+             if (role_names==="" ) {
+                 modal_text="Please click a job's checkbox before Saving";
+                 header_modal= "Please click a job's checkbox before saving";
 
              }
              else{
-
-               modal_text=  hold_title; 
                header_modal= " Jobs Saved!      "; 
              }
              $.ajax({
@@ -241,7 +242,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
 
                            
                              $('#exampleModalLabel').text(header_modal);
-                             $('#modal_body').text(modal_text);
+                             $('#modal_body').text(role_names);
                            $('#exampleModal').modal('show');
                            
                       
@@ -359,7 +360,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         </div>
         <div>  </div>
         
-        <button class="btn btn-info" id="save_item" value ="save_item"  name= "save_item" type="button" onclick= "save_check()">Save Searches</button>
+        <button class="btn btn-info" id="save_item" value ="save_item"  name= "save_item" type="button" onclick= "save_check()">Save Search</button>
         <a  href="/saved_jobs"  class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" > Saved Jobs</a>
          <!--   <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
         <input class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" type="button" > -->
@@ -370,9 +371,10 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         </div>
       </div>
     </div>
+ 
     <div id="loading"></div>
         <div id="content"> 
-           <div class="spinner-border"  role="status">
+           <div class="spinner-border"  style="float: center; line-height: 5; "role="status">
            <span class="sr-only">Loading...</span>
            </div> 
        </div>
