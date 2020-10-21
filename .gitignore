@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 #config file
-jobhunt_prod/conf.py
+src/jobhunt_prod/conf.py
 
 
 
