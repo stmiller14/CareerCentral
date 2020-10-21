@@ -52,7 +52,7 @@ def reset_password(request):
 @login_required(login_url='/loginpage')
 def index(request):
     if not request.user.is_authenticated:
-        return redirect('./templates/loginpage')
+        return redirect('/loginpage')
     if request.method=='POST':
         if 'rolename' not in request.POST.keys():
             models.save_search(request.user.email, json.loads(request.body))

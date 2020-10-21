@@ -42,7 +42,7 @@ EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = conf.email_host
 EMAIL_PORT = conf.email_port
 EMAIL_HOST_USER = conf.email_user
-EMAIL_HOST_PASSWORD = conf.password
+EMAIL_HOST_PASSWORD = conf.email_password
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
