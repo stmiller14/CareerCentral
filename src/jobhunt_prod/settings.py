@@ -34,7 +34,6 @@ import os
 from . import conf
 from pathlib import Path
 
-
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
@@ -133,6 +132,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+
+    {
+        'NAME' : 'django.contrib.auth.password_validation.SpecialCharacterValidator',
+    }
+
 ]
 
 
@@ -159,3 +163,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/collect/')
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
+
+
