@@ -47,8 +47,8 @@ def getrole_simply(role, location):
     url_first= 'https://www.simplyhired.com/search?q='+role+'&l='+location
     url= 'https://www.simplyhired.com/search?q='+role+'&l='+location + '&pn='
     #processor_count= multiprocessing.cpu_count()
-    threads= [ Thread(target=get_simply, args=( url +str(n) , 'python'   ),daemon=True) for n in range(1, 1)]
-    threads.append(Thread(target=get_simply,  args=( url_first , 'python'   ),daemon=True))
+    threads= [ Thread(target=get_simply, args=( url +str(n)  , role  ),daemon=True) for n in range(1, 1)]
+    threads.append(Thread(target=get_simply,  args=( url_first ,  role    ),daemon=True))
     for t in threads:
         t.start()
     for t in threads:
@@ -61,6 +61,7 @@ def getrole_simply(role, location):
     alldata.clear()
     return result
 
-getrole_simply('python', 'new york')
-process = psutil.Process(os.getpid())
-print('total memory usage: ' , process.memory_info().rss , psutil.cpu_percent())  # in bytes 
+if __name__ == "__main__":
+    getrole_simply('python', 'new york')
+    process = psutil.Process(os.getpid())
+    print('total memory usage: ' , process.memory_info().rss , psutil.cpu_percent())  # in bytes 
