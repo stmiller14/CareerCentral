@@ -33,6 +33,7 @@ https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-
 import os 
 
 from pathlib import Path
+import dj_database_url
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
