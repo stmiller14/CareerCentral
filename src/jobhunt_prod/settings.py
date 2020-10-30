@@ -31,27 +31,68 @@ https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-
 
 """
 import os 
-from . import conf
+
 from pathlib import Path
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = conf.email_host
-EMAIL_PORT = conf.email_port
-EMAIL_HOST_USER = conf.email_user
-EMAIL_HOST_PASSWORD = conf.email_password
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
 
+is_prod = os.environ.get('IS_HEROKU', None)
+
+if not is_prod:
+    from . import conf
+    EMAIL_HOST = conf.email_host
+    EMAIL_PORT = conf.email_port
+    EMAIL_HOST_USER = conf.email_user
+    EMAIL_HOST_PASSWORD = conf.email_password
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+    
+    SECRET_KEY = conf.app_key
+    DATABASES = {
+        'default': {
+            'ENGINE':conf.engine, 
+            'HOST': conf.host, 
+            'NAME': conf.name,
+            'USER':conf.user,
+            'PORT':conf.port,
+            'PASSWORD':conf.password,
+            'database':conf.db
+            
+            
+        }
+    }
+else:
+    EMAIL_HOST = os.environ.get('email_host', None)
+    EMAIL_PORT = os.environ.get('email_port', None)
+    EMAIL_HOST_USER = os.environ.get('email_user', None)
+    EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+    
+    SECRET_KEY = os.environ.get('APP_KEY', None)
+    DATABASES = {
+        'default': {
+            'ENGINE':os.environ.get('engine', None), 
+            'HOST': os.environ.get('host', None), 
+            'NAME': os.environ.get('name', None),
+            'USER':os.environ.get('user', None),
+            'PORT':os.environ.get('port', None),
+            'PASSWORD':os.environ.get('password', None),
+            'database':os.environ.get('database', None)
+            
+            
+        }
+    }
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print('base directory: ', BASE_DIR)
 
 
-SECRET_KEY = conf.app_key
+
 
 DEBUG = True
 
@@ -101,19 +142,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'jobhunt_prod.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE':conf.engine, 
-        'HOST': conf.host, 
-        'NAME': conf.name,
-        'USER':conf.user,
-        'PORT':conf.port,
-        'PASSWORD':conf.password,
-        'database':conf.db
-        
-        
-    }
-}
 
 
 # Password validation
