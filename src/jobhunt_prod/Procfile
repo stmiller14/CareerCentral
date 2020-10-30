@@ -1,1 +1,1 @@
-web: gunicorn src/jobhunt_prod.wsgi --log-file -
+web: gunicorn jobhunt_prod.wsgi --log-file -
