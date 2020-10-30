@@ -38,30 +38,56 @@ import dj_database_url
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+is_prod = os.environ.get('IS_HEROKU', None)
 
-
-
-EMAIL_HOST = os.environ.get('email_host', None)
-EMAIL_PORT = os.environ.get('email_port', None)
-EMAIL_HOST_USER = os.environ.get('email_user', None)
-EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-
-SECRET_KEY = os.environ.get('APP_KEY', None)
-DATABASES = {
-    'default': {
-        'ENGINE':os.environ.get('engine', None), 
-        'HOST': os.environ.get('host', None), 
-        'NAME': os.environ.get('name', None),
-        'USER':os.environ.get('user', None),
-        'PORT':os.environ.get('port', None),
-        'PASSWORD':os.environ.get('password', None),
-        'database':os.environ.get('database', None)
-        
-        
+if not is_prod:
+    from . import conf
+    EMAIL_HOST = conf.email_host
+    EMAIL_PORT = conf.email_port
+    EMAIL_HOST_USER = conf.email_user
+    EMAIL_HOST_PASSWORD = conf.email_password
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+    
+    SECRET_KEY = conf.app_key
+    DATABASES = {
+        'default': {
+            'ENGINE':conf.engine, 
+            'HOST': conf.host, 
+            'NAME': conf.name,
+            'USER':conf.user,
+            'PORT':conf.port,
+            'PASSWORD':conf.password,
+            'database':conf.db
+            
+            
+        }
     }
-}
+else:
+
+
+    EMAIL_HOST = os.environ.get('email_host', None)
+    EMAIL_PORT = os.environ.get('email_port', None)
+    EMAIL_HOST_USER = os.environ.get('email_user', None)
+    EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+
+    SECRET_KEY = os.environ.get('APP_KEY', None)
+    DATABASES = {
+        'default': {
+            'ENGINE':os.environ.get('engine', None), 
+            'HOST': os.environ.get('host', None), 
+            'NAME': os.environ.get('name', None),
+            'USER':os.environ.get('user', None),
+            'PORT':os.environ.get('port', None),
+            'PASSWORD':os.environ.get('password', None),
+            'database':os.environ.get('database', None)
+            
+            
+        }
+    }
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,7 +98,7 @@ print('base directory: ', BASE_DIR)
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['careercentral.herokuapp.com']
+ALLOWED_HOSTS = ['careercentral.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -95,7 +121,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'jobhunt_prod.urls'
@@ -169,5 +195,3 @@ STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
 
-#  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
