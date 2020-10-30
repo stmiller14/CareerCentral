@@ -29,7 +29,10 @@ class Indeed():
             company=company_container.div.span.text
             location=location_container.attrs['data-rc-loc']
             desc_container=child_soup.find('div' , {'class' :['summary']})
-            desc= desc_container.ul.li.text
+            try:
+                desc= desc_container.ul.li.text
+            except AttributeError:
+                desc = ""
             if  role.upper() in str(title).upper().strip():
                 all_data[ID]= [title , company.strip() , location ,desc,  href]
                 
@@ -56,4 +59,6 @@ class Indeed():
         all_data.clear()
         return result
 
-#Indeed().getrole('python', 'new york')
+
+if __name__ == "__main__":
+    Indeed().getrole('python', 'new york')
