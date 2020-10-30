@@ -9,10 +9,14 @@ from bs4 import BeautifulSoup
 from threading import Thread
 
 all_data={}
+i=0
 class Indeed():
     def __init__(self):
         self.desc={}
+
     def get_indeed(self,  url, role):
+        global i
+        global all_data
         header_link='https://www.indeed.com'
         response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -34,7 +38,10 @@ class Indeed():
             except AttributeError:
                 desc = ""
             if  role.upper() in str(title).upper().strip():
-                all_data[ID]= [title , company.strip() , location ,desc,  href]
+                print(url)
+                i+=1
+                all_data[ID]= [title , company.strip() , location ,desc,  href ]
+            
                 
     def getrole(self, role, location): 
         result, dups={} , set()
@@ -50,7 +57,6 @@ class Indeed():
             t.start()
         for t in threads:
             t.join()
-
         #cleaning the data
         for k, v in all_data.items():
             if k not in dups:
@@ -58,7 +64,6 @@ class Indeed():
                 dups.add(k)
         all_data.clear()
         return result
-
 
 if __name__ == "__main__":
     Indeed().getrole('python', 'new york')
