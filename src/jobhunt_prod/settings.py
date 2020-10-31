@@ -48,6 +48,38 @@ EMAIL_USE_SSL = False
 
 #SECRET_KEY = os.environ.get('APP_KEY', None)
 SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.postgresql', 
+        'HOST': 'ec2-174-129-220-12.compute-1.amazonaws.com', 
+        'NAME': 'dffg5173o9fp50',
+        'USER': 'kzvaklviiytkfb',
+        'PORT':'5432',
+        'PASSWORD':'0745bde8a76ebeb69e7315a2c0b999b57283bba5ac9916e1b8fd247fa819afc9',
+        'database':'dffg5173o9fp50'
+        
+        
+    }
+}
+
+'''
+DATABASES = {
+    'default': {
+        'ENGINE':conf.engine, 
+        'HOST': conf.host, 
+        'NAME': conf.name,
+        'USER':conf.user,
+        'PORT':conf.port,
+        'PASSWORD':conf.password,
+        'database':conf.db
+        
+        
+    }
+}
+
 DATABASES = {
     'default': {
         'ENGINE':os.environ.get('engine', None), 
@@ -62,7 +94,7 @@ DATABASES = {
     }
 }
 
-
+'''
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print('base directory: ', BASE_DIR)
