@@ -39,13 +39,14 @@ SECRET_KEY = os.environ.get('APP_KEY', None)
 #SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = os.environ.get('email_host', None)
-EMAIL_PORT = os.environ.get('email_port', None)
-EMAIL_HOST_USER = os.environ.get('email_user', None)
-EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
+EMAIL_HOST = os.environ.get('EMAILHOST', None)
+EMAIL_PORT = os.environ.get('EMAILPORT', None)
+EMAIL_HOST_USER = os.environ.get('EMAILUSER', None)
+EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 print("email sender info " , EMAIL_HOST, EMAIL_PORT,  EMAIL_HOST_USER , EMAIL_HOST_PASSWORD )
+
 
 DATABASES = {
     'default': {
