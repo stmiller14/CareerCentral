@@ -45,7 +45,7 @@ EMAIL_HOST_USER = os.environ.get('email_user', None)
 EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
+print("email info " ,  EMAIL_HOST, EMAIL_HOST_PASSWORD)
 #SECRET_KEY = os.environ.get('APP_KEY', None)
 SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 
@@ -53,7 +53,7 @@ SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.postgresql', 
+        'ENGINE':os.environ.get('engine', None), 
         'HOST': 'ec2-174-129-220-12.compute-1.amazonaws.com', 
         'NAME': 'dffg5173o9fp50',
         'USER': 'kzvaklviiytkfb',
