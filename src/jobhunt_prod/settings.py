@@ -33,7 +33,6 @@ https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-
 import os 
 
 from pathlib import Path
-import dj_database_url
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
@@ -45,7 +44,7 @@ EMAIL_HOST_USER = os.environ.get('email_user', None)
 EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-print("email info " ,  EMAIL_HOST, EMAIL_HOST_PASSWORD)
+print("email sender info " ,  EMAIL_HOST_USER , EMAIL_HOST_PASSWORD )
 SECRET_KEY = os.environ.get('APP_KEY', None)
 #SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 
