@@ -41,7 +41,7 @@ EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com' # os.environ.get('EMAILHOST', None)
 EMAIL_PORT = '587' #os.environ.get('EMAILPORT', None)
-EMAIL_HOST_USER = os.environ.get('EMAILUSER', None)
+EMAIL_HOST_USER = 'careercentrals@gmail.com'  #os.environ.get('EMAILUSER', None)
 EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
