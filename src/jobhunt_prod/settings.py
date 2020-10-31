@@ -46,7 +46,8 @@ EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-SECRET_KEY = os.environ.get('APP_KEY', None)
+#SECRET_KEY = os.environ.get('APP_KEY', None)
+SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 DATABASES = {
     'default': {
         'ENGINE':os.environ.get('engine', None), 
