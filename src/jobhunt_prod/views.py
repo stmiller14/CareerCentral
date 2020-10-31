@@ -29,7 +29,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.password_validation import SpecialCharacterValidator
+
 
 
 from asyncio import run
@@ -37,10 +37,12 @@ from asyncio import run
 @csrf_exempt
 def reset_password(request):
     if request.method=='POST':
+        '''
         sp=SpecialCharacterValidator(['a','b'])
         print('special validator')
         #print(sp.validate('Stephen'))
         print(sp.validate('stephenab'))
+        '''
 
         my_form=PasswordResetForm(request.POST)
         if my_form.is_valid():
