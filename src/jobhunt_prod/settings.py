@@ -168,15 +168,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-
-    {
-        'NAME' : 'django.contrib.auth.password_validation.SpecialCharacterValidator',
     }
 
 ]
 
+'''
+,
 
+{
+'NAME' : 'django.contrib.auth.password_validation.SpecialCharacterValidator',
+}
+'''
 
 LANGUAGE_CODE = 'en-us'
 
