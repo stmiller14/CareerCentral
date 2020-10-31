@@ -39,7 +39,7 @@ SECRET_KEY = os.environ.get('APP_KEY', None)
 #SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.gmail.com'# os.environ.get('EMAILHOST', None)
+EMAIL_HOST = 'smtp.gmail.com' # os.environ.get('EMAILHOST', None)
 EMAIL_PORT = '587' #os.environ.get('EMAILPORT', None)
 EMAIL_HOST_USER = os.environ.get('EMAILUSER', None)
 EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
@@ -50,13 +50,13 @@ print("email sender info " , EMAIL_HOST, EMAIL_PORT,  EMAIL_HOST_USER , EMAIL_HO
 
 DATABASES = {
     'default': {
-        'ENGINE':os.environ.get('engine', None), 
-        'HOST': os.environ.get('DBHOST', None), 
-        'NAME': os.environ.get('NAME', None), 
-        'USER': os.environ.get('USER', None), 
-        'PORT':os.environ.get('PORT', None), 
+        'ENGINE':'django.db.backends.postgresql', #os.environ.get('engine', None), 
+        'HOST':'ec2-174-129-220-12.compute-1.amazonaws.com', # os.environ.get('DBHOST', None), 
+        'NAME': 'dffg5173o9fp50', #os.environ.get('NAME', None), 
+        'USER': 'kzvaklviiytkfb' , #os.environ.get('USER', None), 
+        'PORT': '5432',  #os.environ.get('PORT', None), 
         'PASSWORD':os.environ.get('PASSWORD', None), 
-        'database':os.environ.get('DB', None)
+        'database':'dffg5173o9fp50' #os.environ.get('DB', None)
         
         
     }
