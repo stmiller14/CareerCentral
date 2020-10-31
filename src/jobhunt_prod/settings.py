@@ -35,7 +35,8 @@ import os
 from pathlib import Path
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
-
+SECRET_KEY = os.environ.get('APP_KEY', None)
+#SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = os.environ.get('email_host', None)
@@ -45,20 +46,16 @@ EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 print("email sender info " ,  EMAIL_HOST_USER , EMAIL_HOST_PASSWORD )
-SECRET_KEY = os.environ.get('APP_KEY', None)
-#SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
-
-
 
 DATABASES = {
     'default': {
         'ENGINE':os.environ.get('engine', None), 
-        'HOST': 'ec2-174-129-220-12.compute-1.amazonaws.com', 
-        'NAME': 'dffg5173o9fp50',
-        'USER': 'kzvaklviiytkfb',
-        'PORT':'5432',
-        'PASSWORD':'0745bde8a76ebeb69e7315a2c0b999b57283bba5ac9916e1b8fd247fa819afc9',
-        'database':'dffg5173o9fp50'
+        'HOST': os.environ.get('HOST', None), 
+        'NAME': os.environ.get('NAME', None), 
+        'USER': os.environ.get('USER', None), 
+        'PORT':os.environ.get('PORT', None), 
+        'PASSWORD':os.environ.get('PASSWORD', None), 
+        'database':os.environ.get('DB', None)
         
         
     }
