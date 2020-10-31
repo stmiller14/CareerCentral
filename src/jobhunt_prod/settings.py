@@ -39,8 +39,8 @@ SECRET_KEY = os.environ.get('APP_KEY', None)
 #SECRET_KEY = '23ekrs)i8_&e&c1t$93f6o82t1f*!#z*i)qfd^gbq%_y-_jl$z'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = os.environ.get('EMAILHOST', None)
-EMAIL_PORT = os.environ.get('EMAILPORT', None)
+EMAIL_HOST = 'smtp.gmail.com'# os.environ.get('EMAILHOST', None)
+EMAIL_PORT = '587' #os.environ.get('EMAILPORT', None)
 EMAIL_HOST_USER = os.environ.get('EMAILUSER', None)
 EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
 EMAIL_USE_TLS = True
