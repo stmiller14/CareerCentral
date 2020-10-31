@@ -45,7 +45,7 @@ EMAIL_HOST_USER = os.environ.get('email_user', None)
 EMAIL_HOST_PASSWORD =os.environ.get('email_password', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-print("email sender info " ,  EMAIL_HOST_USER , EMAIL_HOST_PASSWORD )
+print("email sender info " , EMAIL_HOST, EMAIL_PORT,  EMAIL_HOST_USER , EMAIL_HOST_PASSWORD )
 
 DATABASES = {
     'default': {
@@ -60,6 +60,7 @@ DATABASES = {
         
     }
 }
+print("db  info " , DATABASES)
 
 '''
 DATABASES = {
