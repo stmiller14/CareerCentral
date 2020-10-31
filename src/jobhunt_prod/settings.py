@@ -51,7 +51,7 @@ print("email sender info " , EMAIL_HOST, EMAIL_PORT,  EMAIL_HOST_USER , EMAIL_HO
 DATABASES = {
     'default': {
         'ENGINE':os.environ.get('engine', None), 
-        'HOST': os.environ.get('HOST', None), 
+        'HOST': os.environ.get('DBHOST', None), 
         'NAME': os.environ.get('NAME', None), 
         'USER': os.environ.get('USER', None), 
         'PORT':os.environ.get('PORT', None), 
