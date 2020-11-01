@@ -11,7 +11,10 @@ alldata={}
 async def get_monster(url, role):
     async with ClientSession() as session:
         async with session.get(url, headers={'User-Agent': 'Mozilla/5.0'}) as response:
+            
             text= await response.text()
+            print(url )
+            print('text: ' , len(str(text)))
             soup = BeautifulSoup(text, 'html.parser')
             summary_container= soup.find_all('div', {'class': ['summary']})
             
