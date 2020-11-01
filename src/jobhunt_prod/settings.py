@@ -35,21 +35,24 @@ import os
 from pathlib import Path
 
 
-is_heroku=os.environ.get('is_heroku', False)
+is_heroku=os.environ.get('IS_HEROKU', False)
 DB_PASS=""
 EMAIL_HOST_PASSWORD=""
-if is_heroku =='True':
-    EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
-    DB_PASS=os.environ.get('PASSWORD', None)
-elif is_heroku ==False:
+print('is heroku ', is_heroku)
+if not is_heroku:
     try: 
         from . import conf
         EMAIL_HOST_PASSWORD=conf.email_password
         DB_PASS=conf.password
+        SECRET_KEY=conf.app_key
     except ImportError:
         pass
+else:
+    SECRET_KEY = os.environ.get('APP_KEY', None)
+    EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
+    DB_PASS=os.environ.get('PASSWORD', None)
         
-SECRET_KEY = os.environ.get('APP_KEY', None)
+
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' # os.environ.get('EMAILHOST', None)
 EMAIL_PORT = '587' #os.environ.get('EMAILPORT', None)
