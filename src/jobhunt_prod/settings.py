@@ -36,6 +36,8 @@ from pathlib import Path
 
 
 is_heroku=os.environ.get('is_heroku', False)
+DB_PASS=""
+EMAIL_HOST_PASSWORD=""
 if is_heroku =='True':
     EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
     DB_PASS=os.environ.get('PASSWORD', None)
