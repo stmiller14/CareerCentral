@@ -28,19 +28,26 @@ https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-
 #STATIC_DIR = os.path.join(BASE_DIR,'static/')
 #STATICFILES_DIRS =[ os.path.join(BASE_DIR, 'static/')]
 #print(STATICFILES_DIRS)
-
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 """
 import os 
 
 from pathlib import Path
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+
+is_heroku=os.environ.get('is_heroku', False)
+if is_heroku =='True':
+    EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
+    DB_PASS=os.environ.get('PASSWORD', None)
+else:
+    from . import conf
+    EMAIL_HOST_PASSWORD=conf.email_password
+    DB_PASS=conf.password
 SECRET_KEY = os.environ.get('APP_KEY', None)
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' # os.environ.get('EMAILHOST', None)
 EMAIL_PORT = '587' #os.environ.get('EMAILPORT', None)
 EMAIL_HOST_USER = 'careercentrals@gmail.com'  #os.environ.get('EMAILUSER', None)
-EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
@@ -51,7 +58,7 @@ DATABASES = {
         'NAME': 'dffg5173o9fp50', #os.environ.get('NAME', None), 
         'USER': 'kzvaklviiytkfb' , #os.environ.get('USER', None), 
         'PORT': '5432',  #os.environ.get('PORT', None), 
-        'PASSWORD':os.environ.get('PASSWORD', None), 
+        'PASSWORD':DB_PASS, 
         'database':'dffg5173o9fp50' #os.environ.get('DB', None)
         
         
@@ -121,6 +128,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 
@@ -197,3 +205,4 @@ STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
