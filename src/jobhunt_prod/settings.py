@@ -39,7 +39,7 @@ is_heroku=os.environ.get('is_heroku', False)
 if is_heroku =='True':
     EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
     DB_PASS=os.environ.get('PASSWORD', None)
-else:
+elif is_heroku ==False:
     from . import conf
     EMAIL_HOST_PASSWORD=conf.email_password
     DB_PASS=conf.password
