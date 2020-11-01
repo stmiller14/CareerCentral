@@ -40,9 +40,13 @@ if is_heroku =='True':
     EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
     DB_PASS=os.environ.get('PASSWORD', None)
 elif is_heroku ==False:
-    from . import conf
-    EMAIL_HOST_PASSWORD=conf.email_password
-    DB_PASS=conf.password
+    try: 
+        from . import conf
+        EMAIL_HOST_PASSWORD=conf.email_password
+        DB_PASS=conf.password
+    except ImportError:
+        pass
+        
 SECRET_KEY = os.environ.get('APP_KEY', None)
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' # os.environ.get('EMAILHOST', None)
