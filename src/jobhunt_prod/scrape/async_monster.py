@@ -11,7 +11,6 @@ alldata={}
 async def get_monster(url, role):
     async with ClientSession() as session:
         async with session.get(url, headers={'User-Agent': 'Mozilla/5.0'}) as response:
-            
             text= await response.text()
             print(url )
             soup = BeautifulSoup(text, 'html.parser')
@@ -49,9 +48,7 @@ async def getrole_monster(role, location):
         get_monster(url + str(5) +url_end+str(5), role ),
         get_monster(url + str(6) +url_end+str(6), role ),
         get_monster(url + str(7) +url_end+str(7), role), 
-        get_monster(url + str(8)+url_end+str(8), role), 
-        get_monster(url + str(9) +url_end+str(9), role), 
-        get_monster(url + str(10) +url_end+str(10), role), 
+     
     
 
     )
@@ -77,4 +74,7 @@ get_monster(url + str(13 )+url_end+str(13), role),
 get_monster(url + str(14)+url_end+str(14), role), 
 get_monster(url + str(15) +url_end+str(15), role), 
 get_monster(url + str(16) +url_end+str(16), role), 
+get_monster(url + str(8)+url_end+str(8), role), 
+get_monster(url + str(9) +url_end+str(9), role), 
+get_monster(url + str(10) +url_end+str(10), role), 
 '''
