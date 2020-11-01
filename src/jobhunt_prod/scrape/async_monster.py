@@ -14,7 +14,6 @@ async def get_monster(url, role):
             
             text= await response.text()
             print(url )
-            print('text: ' , len(str(text)))
             soup = BeautifulSoup(text, 'html.parser')
             summary_container= soup.find_all('div', {'class': ['summary']})
             
@@ -53,12 +52,7 @@ async def getrole_monster(role, location):
         get_monster(url + str(8)+url_end+str(8), role), 
         get_monster(url + str(9) +url_end+str(9), role), 
         get_monster(url + str(10) +url_end+str(10), role), 
-        get_monster(url + str(11) +url_end+str(11), role), 
-        get_monster(url + str(12) +url_end+str(12), role), 
-        get_monster(url + str(13 )+url_end+str(13), role), 
-        get_monster(url + str(14)+url_end+str(14), role), 
-        get_monster(url + str(15) +url_end+str(15), role), 
-        get_monster(url + str(16) +url_end+str(16), role), 
+    
 
     )
     rawdata.update(alldata)
@@ -71,3 +65,16 @@ async def getrole_monster(role, location):
 
     return result
 
+
+if __name__ == "__main__":
+    getrole_monster('python' , 'New York')   
+
+'''
+
+get_monster(url + str(11) +url_end+str(11), role), 
+get_monster(url + str(12) +url_end+str(12), role), 
+get_monster(url + str(13 )+url_end+str(13), role), 
+get_monster(url + str(14)+url_end+str(14), role), 
+get_monster(url + str(15) +url_end+str(15), role), 
+get_monster(url + str(16) +url_end+str(16), role), 
+'''

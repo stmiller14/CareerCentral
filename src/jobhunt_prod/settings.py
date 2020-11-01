@@ -38,7 +38,6 @@ from pathlib import Path
 is_heroku=os.environ.get('IS_HEROKU', False)
 DB_PASS=""
 EMAIL_HOST_PASSWORD=""
-print('is heroku ', is_heroku)
 if not is_heroku:
     try: 
         from . import conf
