@@ -56,6 +56,10 @@ def reset_password(request):
 def change_password(request):
     return render(request, 'registration/password_reset_confirm.html'  )
 
+def reset_done(request):
+    print('after password change   ' , request.POST)
+    return render(request, 'registration/password_reset_complete.html'  )
+
 
 @never_cache
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
