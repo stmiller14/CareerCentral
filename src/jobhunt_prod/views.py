@@ -29,9 +29,6 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import PasswordResetForm
-
-
-
 from asyncio import run
 
 @csrf_exempt
@@ -55,6 +52,9 @@ def reset_password(request):
         else:
             return render(request, 'registration/password_reset_form.html', {'error':'Please Enter Valid Email'})
     return render(request, 'registration/password_reset_form.html'  )
+
+def change_password(request):
+    return render(request, 'registration/password_reset_confirm.html'  )
 
 
 @never_cache
@@ -90,8 +90,6 @@ def loginpage(request):
     if request.method=='POST':
         resp=request.POST
         user_name, password=resp['user_name'] , resp['password']
-        print("in login page ")
-        password
         user = authenticate(request, username=user_name, password=password)
         if user is not None:
             login(request, user)
@@ -121,8 +119,7 @@ def saved_jobs(request):
     elif request.method=='POST':
         if 'redirect_home' in request.POST.keys():
             return redirect( '/', {'user_name': User.first_name}  )
-        data= json.loads(request.body)
-        models.delete_job(request.user.email, data)
+        models.delete_job(request.user.email, json.loads(request.body))
         
     return render(request,'saved_jobs.html')
 

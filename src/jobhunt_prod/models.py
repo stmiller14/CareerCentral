@@ -10,10 +10,10 @@ def initialize_connection():
 def save_search( email, data):
         cursor=initialize_connection()
         MAX_NUM=8
+        link=""
         for key, value in data.items():
             row_data=[email, datetime.now()]
-            link="www.nodatain.com"
-            for i, col in enumerate(value):
+            for  col in value:
                 if 'http' in col:
                     link=col
                 else:
@@ -22,13 +22,9 @@ def save_search( email, data):
             while  counter>0:
                 row_data.append('')
                 counter -=1
-
             row_data.append(link)
             save_search_query = """INSERT INTO public."jobs" (email ,  datetime , role , description , location,  company , link, junk , junk2, junk3) VALUES (%s,%s,%s, %s, %s,%s,%s, %s,%s ,%s)""" 
-
-            
-            row_data=tuple(row_data)
-            cursor.execute(save_search_query, row_data)
+            cursor.execute(save_search_query, tuple(row_data))
             connection.commit()
 
 def fetch_saved_jobs(email):

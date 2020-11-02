@@ -28,5 +28,6 @@ urlpatterns = [
     path('accounts/password_reset/',views.reset_password,name="password_reset"),
     path('accounts/login/',views.loginpage,name="loginpage"),
     path('accounts/', include('django.contrib.auth.urls')), # new
+    path('accounts/reset/MQ/set-password/', views.change_password, name="changepassword")
     
 ]
