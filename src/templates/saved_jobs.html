@@ -23,27 +23,33 @@
 <style>
   .table{
 
-    counter-reset: serial-number;  
     width: 100%;
-    margin-left: 20px;
-    border:"1";
+
   }
 
-  .table td:first-child:before {
+
+
+
+
+
+
+
+</style>
+
+<!-- 
+tr:nth-child(even){background-color: rgb(229, 235, 238)}
+tr:nth-child(odd){background-color:rgb(229, 235, 238)}
+
+ background-image: url("/static/test2.jpg");  
+    background-size: cover;
+
+
+      .table td:first-child:before {
 counter-increment: serial-number;  /* Increment the serial number counter */
 content: counter(serial-number ) ".     ";  /* Display the counter */
   }
-  body{
- background-image: url("/static/test2.jpg");  
-    background-size: cover;
-}
 
-
-tr:nth-child(even){background-color: rgb(229, 235, 238)}
-tr:nth-child(odd){background-color:rgb(229, 235, 238)}
-</style>
-
-
+-->
 
 
 <script>
@@ -68,7 +74,7 @@ function delete_jobs(){
   
  
    <form  role="form" name="delete_form" action="{% url 'saved_jobs' %}"  method="post">
-    <input class="btn btn-info" type="submit" id="redirect_home" value ="Home Page"  name= "redirect_home" type="button" >
+    <input class="btn" type="submit" id="redirect_home" value ="Home Page"  name= "redirect_home" type="button"style="color:blue;"  >
 
 <section id="tabs" class="project-tab">
             <div class="container">
@@ -78,15 +84,20 @@ function delete_jobs(){
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                               <table class="table" id="table_id" cellspacing="0">
                                     {% for  row in results %}
+                                    {% with x=forloop.counter%} 
+                                     
                                         <tr>
+                                          <td> {{x}} </td>    {%endwith%}
                                          {% for col in row %}                                      
                                             {% if "http" in col %}
                                             {% with col=col.strip%}
-                                           <td>  <a href= {{col}}  style="color:black;" id='url_link' target="_blank" >Click to apply</a> </td>
+                                           <td>  <a href= {{col}}   id='url_link' target="_blank" >Click to apply</a> </td>
                                            <td> <input type="button" class="btn btn-info" id={{col}}  name="delete_job"  onclick = "delete_jobs()" value=Delete >  </td>
                                           {%endwith%}
                                            {%else %}   
-                                               <td style="color:black;"> {{ col }}  
+                                              
+                                            <td style="color:black;"> {{ col }}  
+                                              
                                             {%endif%}                    
                                           {%endfor%}                                 
                                    {%endfor%}  

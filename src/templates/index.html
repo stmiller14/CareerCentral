@@ -49,22 +49,23 @@
 
 <!------ Include the above in your HEAD tag ---------->
 
-
+ <!-- 
+  .table td:first-child:before {
+        counter-reset: serial-number;  
+counter-increment: serial-number;  /* Increment the serial number counter */
+content: counter(serial-number ) ".     ";  /* Display the counter */
+  }
+ 
+    ---------->
   
 <style>
          
   .table{
-    counter-reset: serial-number;  
+
     table-layout: fixed; 
     width: 100%;
     
   }
-  .table td:first-child:before {
-counter-increment: serial-number;  /* Increment the serial number counter */
-content: counter(serial-number ) ".     ";  /* Display the counter */
-  }
-
-
 
   #monster_button{
               margin-left: 50px;
@@ -205,9 +206,9 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
            $('#table_id').find('input[type="checkbox"]:checked').each(function (index) {
                var row_data=[];
                var row = $(this).closest("tr")[0]; //sending html data of the row of specific checkbox
-               var role_name= row.cells[0].innerHTML;
+               var role_name= row.cells[1].innerHTML;
             
-             for (i = 0; i < row.cells.length -1; i++) {
+             for (i = 1; i < row.cells.length -1; i++) {
                  if (row.cells[i].innerHTML.includes('href') ) {
                      row_data.push(dict[$(this).closest("tr").index()]);
                  }
@@ -414,7 +415,10 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
                                 <script> alert("For Glassdoor please try and specify a state or major city in United States during search") </script>
                                 {%endif%}
                           
-                                <tr>
+                                 {% with x=forloop.counter%} 
+                                     
+                                        <tr>
+                                          <td> {{x}} </td>    {%endwith%}
                                 {%for row in result%}   
                                     {% if "http" in row %}
                                       {% with row=row.strip%}
