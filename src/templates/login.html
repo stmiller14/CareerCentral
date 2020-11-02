@@ -22,7 +22,7 @@
         <style>
                 
              
-                div p{
+                div h2{
                 font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 
                 margin-top:90px;
@@ -43,7 +43,7 @@
 
   
 <style>
-  input[type=button], input[type=submit], input[type=reset] ,a{
+   input[type=submit] {
     background-color: #56baed;
     border: none;
     color: white;
@@ -65,9 +65,7 @@
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
   }
-  a{
-    
-  }
+
 
   
   input[type=text], input[type=password] {
@@ -115,7 +113,7 @@ $(document).ready(function(){
   <body onload="nothing()">
 
    <div class="container">
-    <p class="mb-5">Please login to access jobs</p>
+    <h2 class="mb-5">Please Login</h2>
     <form  role="form" name="formname" action="{% url 'loginpage' %}" style="width:400px; margin: 0 auto;" method="post">
       {% csrf_token %}        
 
@@ -126,9 +124,9 @@ $(document).ready(function(){
        
 
     <input class="btn btn-default" type="submit" id= "loginID" value="Login">
-     <a href="/register_user"    class="btn btn-default" type="submit" value="Register" style=" padding: 15px 80px; color: white;background-color: #56baed;font-size: 13px;" name ='Register'> Register </a>
+    <input class="btn btn-default"     class="btn btn-default" type="submit" value="Register" name ='Register'>
     
-     <a  href="/accounts/password_reset"  type="submit" value="reset"  id=reset name=reset > Reset Password</a>
+     <a  href="/accounts/password_reset"   value="reset"  id=reset name=reset > Reset Password</a>
 
         {% if error %}
         <p class=error><strong>Error:</strong> {{ error }}
