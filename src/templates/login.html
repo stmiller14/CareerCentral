@@ -1,3 +1,17 @@
+{% extends "base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}">{% endblock %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+&rsaquo; {% translate 'Password reset confirmation' %}
+</div>
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content_title %}<h1>{{ title }}</h1>{% endblock %}
+{% block content %}
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 <!doctype html>
@@ -6,7 +20,7 @@
   
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
+    
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <!-- Bootstrap CSS -->
@@ -113,7 +127,7 @@ $(document).ready(function(){
   <body onload="nothing()">
 
    <div class="container">
-    <h2 class="mb-5">Please Login</h2>
+    
     <form  role="form" name="formname" action="{% url 'loginpage' %}" style="width:400px; margin: 0 auto;" method="post">
       {% csrf_token %}        
 
@@ -135,7 +149,7 @@ $(document).ready(function(){
   </body>
 
          
-
+  {% endblock %}
   
 </html>
 
