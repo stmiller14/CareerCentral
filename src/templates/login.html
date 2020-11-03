@@ -20,8 +20,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
      <script type="text/javascript">
-
-     
      
         </script>
         {% extends "base_site.html" %}
@@ -29,69 +27,6 @@
         
         {% block content %}
         <style>
-          input[type="text"] , input[type="password"] {
-          
-          width: 40%;
-          }
-          </style>
-    <script>
-
-     
-$(document).ready(function(){
-    $('#password').keypress(function(e){
-      if(e.keyCode==122){
-      $('#loginID').click();
-      }
-    });
-});
-
-    </script>
-    
-
-
-
-  </head>
-  <body onload="nothing()">
-
-   <div class="container">
-     
-    
-    <form  role="form" name="formname" action="{% url 'loginpage' %}" method="post">
-      {% csrf_token %}        
-
-        <input id="user_name" type="text" placeholder="email" width="35%" class="form-control" name="user_name">
-
-  
-        <input id="password" type="password" placeholder="password"  class="form-control" name="password" >
-       
-
-    <input class="btn btn-default" type="submit" id= "loginID" value="Login">
-    <input class="btn btn-default"     class="btn btn-default" type="submit" value="Register" name ='Register'>
-    <p></p>
-     <a  href="/accounts/password_reset"   value="reset"  id=reset name=reset > Reset Password</a>
-
-        
-       {% if error %}
-        <p class=error><strong>Error:</strong> {{ error }}
-      {% endif %}
-
-
-  </body>
-
-         
-  {% endblock %}
-  
-</html>
-
-
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag 
-  jQuery first, then Popper.js, then Bootstrap JS 
-
-
-          <style>
                 
              
                 div h2{
@@ -160,8 +95,65 @@ $(document).ready(function(){
   
   
     </style>  
+    <script>
+
+$(document).ready(function(){
+    $('#password').keypress(function(e){
+      if(e.keyCode==122){
+      $('#loginID').click();
+      }
+    });
+});
+
+    </script>
+    
+
+
+
+  </head>
+  <body onload="nothing()">
+
+   <div class="container">
+     
+    
+    <form  role="form" name="formname" action="{% url 'loginpage' %}" style="width:40%; margin: 0 auto;" method="post">
+      {% csrf_token %}        
+
+        <input id="user_name" type="text" placeholder="email"  class="form-control" name="user_name">
+
+  
+        <input id="password" type="password" placeholder="password"  class="form-control" name="password" >
+       
+
+    <input class="btn btn-default" type="submit" id= "loginID" value="Login">
+    <input class="btn btn-default"     class="btn btn-default" type="submit" value="Register" name ='Register'>
+    <p></p>
+     <a  href="/accounts/password_reset"   value="reset"  id=reset name=reset > Reset Password</a>
+     {% if error %}
+     <p class=error><strong>Error:</strong> {{ error }}
+      {% endif %}
       
-    -->
+
+  </body>
+
+         
+  {% endblock %}
   
-  
-  ---------->
+</html>
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS 
+      <script>
+      if ("{{error}}"){
+        alert( "{{error}}" );
+        }
+
+        
+        </script>
+     
+      -->
