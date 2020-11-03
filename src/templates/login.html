@@ -116,7 +116,7 @@ $(document).ready(function(){
    <div class="container">
      
     
-    <form  role="form" name="formname" action="{% url 'loginpage' %}" style="width:40%; margin: 0 auto;" method="post">
+    <form  role="form" name="formname" action="{% url 'loginpage' %}" style="width:400px; margin: 0 auto;" method="post">
       {% csrf_token %}        
 
         <input id="user_name" type="text" placeholder="email"  class="form-control" name="user_name">
