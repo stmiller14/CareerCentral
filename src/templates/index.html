@@ -66,6 +66,22 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
     width: 100%;
     
   }
+  .btn {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #3f6bad;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #598bc9;
+    color: #FFF;
+    padding: 8px 12px;
+    text-decoration: none;
+
+    
+  }
 
   #monster_button{
               margin-left: 50px;
@@ -103,30 +119,48 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
   .btn{
     margin:10px;
   }
+  #redirect_save{
+    width: 125px;
+  }
 
 
 </style>
 
 <script>
+
   
   function logout_clicked(){
     sessionStorage.clear();
     localStorage.clear();
+    $("#role_id").removeAttr("required");
+    $("#pac-input").removeAttr("required");
+
     $.ajax({
         url: "{% url 'logoutuser' %}",
         type: "POST",
+        async: false,
         contentType: "application/json",
         data: JSON.stringify('logout'), 
           success: function(data) {
               console.log('success ajax request ');
-
+            
           },
           error: function(e){
             console.log('bad  ajax request ' + e);
-
           }
     });
+
+   
+
   }
+
+  
+
+
+
+
+
+
 </script>
 
 
@@ -176,6 +210,9 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
 
 
        $(document).ready(function(){
+        $("#role_id").attr("required", 'required');
+            $("#pac-input").attr("required", 'required');
+        
         $('#pac-input').keypress(function(e){
           if($('#pac-input').val() && $('#role_id').val() ){
                 $("input[type=image]").removeAttr('disabled');
@@ -223,8 +260,8 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
              
                });
              if (role_names==="" ) {
-                 modal_text="Please click a job's checkbox before Saving";
-                 header_modal= "Please click a job's checkbox before saving";
+                 modal_text="Please click a jobs checkbox before saving";
+                 header_modal= "Please click a jobs checkbox before saving";
 
              }
              else{
@@ -320,10 +357,13 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         {% endif %}
       <form  role="form" name="formname" action="{% url 'index' %}" onkeydown="return event.key != 'Enter';"  onclick="return IsEmpty();" style="width:400px; margin: 0 auto;" method="post">
         {% csrf_token %} 
-        <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
-          <a  href="/loginpage"  class="btn btn-info"  type="submit" value="logoutuser"  id=logoutuser name=logoutuser style="float: right; " onclick= "logout_clicked()"> Logout</a>
+        <button class="btn"   type="submit" value="logoutuser"    id=logoutuser name=logoutuser style="float: right; margin-left: 5%;" onclick= "logout_clicked()">  Login</button>
+          <button class="btn"   type="submit" value="logoutuser"  id=logoutuser name=logoutuser style="float: right; " onclick= "logout_clicked()"> Logout</button>
+        <!--
+        <a  href="/loginpage" class="btn"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
+          <a  href="/loginpage"  class="btn"  type="submit" value="logoutuser"  id=logoutuser name=logoutuser style="float: right; " onclick= "logout_clicked()"> Logout</a>
           
-          
+        -->
       
     </div>
   </nav>
@@ -344,7 +384,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
               
         
         <div class="required-field-block">
-            <input type="text" id="role_id" placeholder="Role - required"  class="form-control" name="rolename" required>
+            <input type="text" id="role_id" placeholder="Role - required"  class="form-control" name="rolename" required >
             <div class="required-icon">
               
             </div>
@@ -362,9 +402,12 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         </div>
         <div>  </div>
         
-        <button class="btn btn-info" id="save_item" value ="save_item"  name= "save_item" type="button" onclick= "save_check()">Save Search</button>
-        <a  href="/saved_jobs"  class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" > Saved Jobs</a>
-         <!--   <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
+        <button class="btn" id="save_item" value ="save_item"  name= "save_item" type="button" id= "Save_Click" onclick= "save_check()">Save Search</button>
+        <input class="btn" id= "redirect_save" value ="Saved Jobs"  onclick= " window.location.href = '/saved_jobs'; " > </input>
+
+
+     <!--    <a  href="/saved_jobs"  class="btn" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" > Saved Jobs</a>
+           <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
         <input class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" type="button" > -->
         
         
@@ -574,9 +617,14 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
     }
   </script>
   
+  <!-- Need to hide api key  -->
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp18n5F8eE3vT_qPUhwZkx8jlgpa0ZG6s&libraries=places&callback=initMap"
+  async defer>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp18n5F8eE3vT_qPUhwZkx8jlgpa0ZG6s&libraries=places&callback=initMap"
-  async defer></script>
+
+
+</script>
 
 
   <!-- Bootstrap core JavaScript -->

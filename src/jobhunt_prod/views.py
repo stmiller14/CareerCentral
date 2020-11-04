@@ -105,7 +105,9 @@ def loginpage(request):
 @csrf_exempt
 def logoutuser(request):
     logout(request)
+    print("in logout ")
     return redirect('/loginpage' , {'error':None})
+
 
 
 

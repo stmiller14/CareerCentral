@@ -1,5 +1,9 @@
 '''
 monster scrape with async design
+
+changed url to for location of applying 
+https://www.monster.com/jobs/search?q=python&where=new-york&jobid=220822592
+
 '''
 
 from bs4 import BeautifulSoup
