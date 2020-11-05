@@ -20,9 +20,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
      <script type="text/javascript">
         </script>
+        {% extends "base_site.html" %}
+        {% load i18n static %}
+        
+        {% block content %}
         <style>
                 .buttonclass {
                      width:900px;
+                }
            
                 div h1{
                 
@@ -79,27 +84,23 @@
  
    <div class="container">
 
-    <form  role="form" name="formname" action="{{ url_for('createuser') }}" onkeydown="return event.key != 'Enter';" style="width:400px; margin: 0 auto;" method="post">
-               
+    <form  role="form" name="formname" action="{% url 'register' %}" onkeydown="return event.key != 'Enter';" style="width:400px; margin: 0 auto;" method="post">
+      {% csrf_token %} 
                 <p>Please add information to create account </p>
         
         <div class="required-field-block">
-            <input type="text" id="firstname" placeholder="First Name"  class="form-control" name="firstname" required>
+            <input type="text" id="Username" placeholder="User Name "  class="form-control" name="user_name" required>
         </div>
-
         <div class="required-field-block">
-          <input id="lastname" type="text" placeholder="Last Name"  class="form-control" name="lastname" required>
+          <input type="text" id="firstname" placeholder=" First Name "  class="form-control" name="first_name" required>
+      </div>
+        <div class="required-field-block">
+          <input id="lastname" type="text" placeholder="Last Name"  class="form-control" name="last_name" required>
         </div>
         <div class="required-field-block">
           <input id="email_id" type="text" placeholder="Email address"  class="form-control" name="email" required>
         </div>
-      
-        <div class="required-field-block">
-          <input id="career_id" type="text" placeholder="Current career"  class="form-control" name="career" required>
-        </div>
-        <div class="required-field-block">
-          <input id="location_id" type="text" placeholder="Address"  class="form-control" name="location" required>
-        </div>
+       
         <div class="required-field-block">
           <input id="password_id" type="password" placeholder="password"  class="form-control" name="password" required>
         </div>
@@ -119,7 +120,7 @@
          
 
 </table>
-  
+{% endblock %}
 </html>
 
 

@@ -143,16 +143,22 @@ def saved_jobs(request):
     return render(request,'saved_jobs.html')
 
 @csrf_exempt
-def register_user(request):
+def register(request):
+    
     if request.method=='POST':
         resp=request.POST
         try:
             user = User.objects.create_user(resp['user_name'] , resp['email']  , resp['password'] )
+            user.first_name= resp['first_name'] 
+            user.last_name = resp['last_name'] 
+            user.is_active=True
             user.save()
             login(request, user)
             return redirect( '/', {'user_name': 'First time user: ' + str(request.user.first_name)}  )
         except IntegrityError:
             return False
+    else:
+        return render(request,'register_user.html')
          
 
 @csrf_exempt
