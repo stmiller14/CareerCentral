@@ -30,7 +30,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import PasswordResetForm
 from asyncio import run
-
+from os import environ
 @csrf_exempt
 def reset_password(request):
     if request.method=='POST':
@@ -60,6 +60,18 @@ def reset_done(request):
     print('after password change   ' , request.POST)
     return render(request, 'registration/password_reset_complete.html'  )
 
+def get_api():
+    API_KEY=""
+    if not environ.get('IS_HEROKU', False):
+        try: 
+            from . import conf
+            API_KEY=conf.API_KEY
+        except ImportError:
+            pass
+    else:
+        API_KEY = environ.get('API_KEY', None)
+    return API_KEY
+
 
 @never_cache
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -67,6 +79,7 @@ def reset_done(request):
 def index(request):
     if not request.user.is_authenticated:
         return redirect('/loginpage')
+    API=get_api()
     if request.method=='POST':
         if 'rolename' not in request.POST.keys():
             models.save_search(request.user.email, json.loads(request.body))
@@ -82,9 +95,9 @@ def index(request):
         elif 'glass.x' in resp.keys():
             ret=list(multiprocess_simply.getrole_simply(role,location).values())
             
-        return render(request, 'index.html', {'results': ret}  )
+        return render(request, 'index.html', {'results': ret , 'API_KEY' : API}  )
     else:
-        return render(request, 'index.html')
+        return render(request, 'index.html', {'API_KEY' : API } )
 
 
 
