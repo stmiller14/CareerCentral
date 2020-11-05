@@ -45,7 +45,8 @@ def getrole_simply(role, location):
         location= location[0].strip()+ "," + location[1].strip()
     url_first= 'https://www.simplyhired.com/search?q='+role+'&l='+location
     url= 'https://www.simplyhired.com/search?q='+role+'&l='+location + '&pn='
-    #processor_count= multiprocessing.cpu_count()
+    processor_count= multiprocessing.cpu_count()
+    print('count on this CPU '  , processor_count)
     pool=multiprocessing.Pool(11)
     iterable = zip( [ url +str(i)  if i != 0 else  url_first  for i in range(1,30)   ],  [role for i in range(1,30)  ] )
     result_pool=pool.starmap( get_simply, iterable) 
