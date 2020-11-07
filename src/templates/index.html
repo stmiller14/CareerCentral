@@ -453,15 +453,11 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
                             {% for  result in results %}
                               {% with rowloop=loop %}
                               {%endwith%}
-
-                              {% if "cant connect" in result %}
-                                <script> alert("For Glassdoor please try and specify a state or major city in United States during search") </script>
-                                {%endif%}
-                          
                                  {% with x=forloop.counter%} 
                                      
-                                        <tr>
-                                          <td> {{x}} </td>    {%endwith%}
+                                  <tr>
+                                    <td> {{x}} </td>   
+                                  {%endwith%}
                                 {%for row in result%}   
                                     {% if "http" in row %}
                                       {% with row=row.strip%}
@@ -494,20 +490,8 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
     </div>
 </section>    
 
-  
-
-
-
-
-
-
-
-
-
-
   <script>
-    // This example requires the Places library. Include the libraries=places
-    // parameter when you first load the API. For example:
+    // Places API
     // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
     function initMap() {
@@ -521,9 +505,6 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
   <script
   src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}a0ZG6s&libraries=places&callback=initMap"
   async defer>
-
-
-
 </script>
 
 
