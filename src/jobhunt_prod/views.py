@@ -32,6 +32,7 @@ from django.contrib.auth.forms import PasswordResetForm , UserCreationForm
 from asyncio import run
 from os import environ
 from django.contrib import messages
+from . import custom_form 
 @csrf_exempt
 def reset_password(request):
     if request.method=='POST':
@@ -111,7 +112,7 @@ def loginpage(request):
         user = authenticate(request, username=user_name, password=password)
         if user is not None:
             login(request, user)
-            return redirect( '/', {'user_name': user_name}  )
+            return redirect( '/', {'user_name': request.user.first_name}  )
         else:
             return render(request, 'login.html', {'error':'invalid login credentials' })
     return render(request, 'login.html' )
@@ -122,13 +123,6 @@ def logoutuser(request):
     print("in logout ")
     return redirect('/loginpage' , {'error':None})
 
-
-
-
-
-'''
-need to get the saved jobs from DB and return in table format 
-'''
 @csrf_exempt
 def saved_jobs(request):
     if not request.user.is_authenticated:
@@ -147,18 +141,21 @@ def saved_jobs(request):
 def register(request):
     
     if request.method=='POST':
-        user_form=UserCreationForm(request.POST)
+        user_form=custom_form.UserForm(request.POST)
         
         if user_form.is_valid():
-            user_form.save()
+            user=user_form.save()
             username = user_form.cleaned_data.get('username')
             password = user_form.cleaned_data.get('password1')
+            firstname = user_form.cleaned_data.get('first_name')
+            lastname = user_form.cleaned_data.get('last_name')
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect( '/', {'user_name': user.username}  )
+            print('redirecting to home page for '  , firstname)
+            return redirect( '/', {'user_name': User.first_name}  )
         return render( request  ,'register_user.html', {'form': user_form})
     else:
-        user_form = UserCreationForm()
+        user_form = custom_form.UserForm()
     return render(request,'register_user.html', {'form': user_form})
          
 

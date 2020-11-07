@@ -24,31 +24,7 @@
         {% load i18n static %}
         
         {% block content %}
-        <style>
-                .buttonclass {
-                     width:900px;
-                }
-           
-                div h1{
-                
-                    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-                     margin-left: 100px;
-                    }
-                div p{
-                font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-                 margin-left: 70px;
-                }
-                .table{
-                  counter-reset: serial-number;  
-                }
-                .table td:first-child:before {
-              counter-increment: serial-number;  /* Increment the serial number counter */
-              content: counter(serial-number ) ".     ";  /* Display the counter */
-                }
-             
-                
-            
-        </style>
+     
           
 <style>
   input[type=button], input[type=submit], input[type=reset]  {
@@ -83,13 +59,14 @@
   <body>
  
    <div class="container">
-         <h2>Sign up Form</h2>
+         <h2>Registation</h2>
               <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
                   <p>
                     {{ field.label_tag }}<br>
-                    {{ field }}
+                      {{field}} 
+               
                     {% if field.help_text %}
                       <small style="color: grey">{{ field.help_text }}</small>
                     {% endif %}
