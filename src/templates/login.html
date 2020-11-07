@@ -119,7 +119,7 @@ $(document).ready(function(){
     <form  role="form" name="formname" action="{% url 'loginpage' %}" style="width:375px; margin: 0 auto;" method="post">
       {% csrf_token %}        
 
-        <input id="user_name" type="text" placeholder="email"  class="form-control" name="user_name">
+        <input id="user_name" type="text" placeholder="username"  class="form-control" name="user_name">
 
   
         <input id="password" type="password" placeholder="password"  class="form-control" name="password" >
