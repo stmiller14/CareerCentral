@@ -80,10 +80,42 @@
   
       
   </head>
-  <body onload="nothing()">
+  <body>
  
    <div class="container">
+         <h2>Sign up Form</h2>
+              <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                  <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.help_text %}
+                      <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                    {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+                <input  class="btn btn-default"  value="Sign Up"   type="submit"></button>
+              </form>
+      </body>
+      {% endblock %}
+  
+      </html>
 
+
+
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag
+  
     <form  role="form" name="formname" action="{% url 'register' %}" onkeydown="return event.key != 'Enter';" style="width:400px; margin: 0 auto;" method="post">
       {% csrf_token %} 
                 <p>Please add information to create account </p>
@@ -106,25 +138,9 @@
         </div>
 
         <input  class="btn btn-default" type="submit" value="Submit"  id="submit_button">
-
-        
-  </body>
-
-  {% if response == 23505 %}
-  <script> alert("Account already created with this email address") </script>
-  {%endif%}
-  {% if response == 23506 %}
-  <script> alert("Please enter a valid email address") </script>
-  {%endif%}
-              
-         
-
-</table>
-{% endblock %}
-</html>
-
-
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+      
+        {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}
+         {% endif %}
+  
+  ---------->

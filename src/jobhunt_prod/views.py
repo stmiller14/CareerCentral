@@ -28,9 +28,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordResetForm , UserCreationForm
 from asyncio import run
 from os import environ
+from django.contrib import messages
 @csrf_exempt
 def reset_password(request):
     if request.method=='POST':
@@ -146,19 +147,19 @@ def saved_jobs(request):
 def register(request):
     
     if request.method=='POST':
-        resp=request.POST
-        try:
-            user = User.objects.create_user(resp['user_name'] , resp['email']  , resp['password'] )
-            user.first_name= resp['first_name'] 
-            user.last_name = resp['last_name'] 
-            user.is_active=True
-            user.save()
+        user_form=UserCreationForm(request.POST)
+        
+        if user_form.is_valid():
+            user_form.save()
+            username = user_form.cleaned_data.get('username')
+            password = user_form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect( '/', {'user_name': 'First time user: ' + str(request.user.first_name)}  )
-        except IntegrityError:
-            return False
+            return redirect( '/', {'user_name': user.username}  )
+        return render( request  ,'register_user.html', {'form': user_form})
     else:
-        return render(request,'register_user.html')
+        user_form = UserCreationForm()
+    return render(request,'register_user.html', {'form': user_form})
          
 
 @csrf_exempt
@@ -169,6 +170,22 @@ def save_job(request):
 
 
 
+
+'''
+        resp=request.POST
+        
+        try:
+            user = User.objects.create_user(resp['user_name'] , resp['email']  , resp['password'] )
+            user.first_name= resp['first_name'] 
+            user.last_name = resp['last_name'] 
+            user.is_active=True
+            user.save()
+            login(request, user)
+            return redirect( '/', {'user_name': 'First time user: ' + str(request.user.first_name)}  )
+        except IntegrityError:
+            return False
+        
+'''
 
 
 
