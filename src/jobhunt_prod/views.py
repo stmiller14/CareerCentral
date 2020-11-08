@@ -144,11 +144,13 @@ def register(request):
         user_form=custom_form.UserForm(request.POST)
         
         if user_form.is_valid():
-            user=user_form.save()
+            
             username = user_form.cleaned_data.get('username')
             password = user_form.cleaned_data.get('password1')
             firstname = user_form.cleaned_data.get('first_name')
-            lastname = user_form.cleaned_data.get('last_name')
+            email = user_form.cleaned_data.get('email')
+            user_form.clean_email()
+            user=user_form.save()
             user = authenticate(username=username, password=password)
             login(request, user)
             print('redirecting to home page for '  , firstname)
