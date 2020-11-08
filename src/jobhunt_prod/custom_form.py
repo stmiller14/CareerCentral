@@ -8,7 +8,7 @@ class UserForm(UserCreationForm):
     email=forms.CharField(max_length=30)
     first_name=forms.CharField(max_length=20)
     last_name=forms.CharField(max_length=20)
-    error_messages = {
+    custom_messages = {
         'email_dups': _('Email is already registered'),
     }
 
@@ -16,13 +16,13 @@ class UserForm(UserCreationForm):
         model=User
         fields=("username"  , "first_name", "last_name" ,  "email" )
 
-
+    #is django identifying the clean" or can i make the name arbitrary?
     def clean_email(self ):
         email=self.cleaned_data.get("email")
         if User.objects.filter(email=email).exists():
             
             raise forms.ValidationError(
-                self.error_messages['email_dups'], 
+                self.custom_messages['email_dups'], 
                 code='invalid')
             
         return email
