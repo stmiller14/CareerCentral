@@ -126,7 +126,8 @@ $(document).ready(function(){
        
 
     <input class="btn btn-default" type="submit" id= "loginID" value="Login">
-    <a class="btn btn-default"  href="/register"    class="btn btn-default" type="submit" value="Register" name ='Register'  onclick= " window.location.href = '/register'; "  > Register </a>
+    <p></p>
+    <a  href="/register"  value="Register" name ='Register' > Register </a>
     <p></p>
      <a  href="/accounts/password_reset"   value="reset"  id=reset name=reset > Reset Password</a>
      {% if error %}
@@ -145,8 +146,9 @@ $(document).ready(function(){
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
+<!------ Include the above in your HEAD tag 
+<a class="btn btn-default"  href="/register"    class="btn btn-default" type="submit" value="Register" name ='Register'  onclick= " window.location.href = '/register'; "  > Register </a>
+---------->
   <!-- jQuery first, then Popper.js, then Bootstrap JS 
       <script>
       if ("{{error}}"){

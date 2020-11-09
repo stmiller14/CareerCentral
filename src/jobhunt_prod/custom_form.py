@@ -20,20 +20,11 @@ class UserForm(UserCreationForm):
     def clean_email(self ):
         email=self.cleaned_data.get("email")
         if User.objects.filter(email=email).exists():
-            
             raise forms.ValidationError(
                 self.custom_messages['email_dups'], 
                 code='invalid')
-            
         return email
             
             
             
-            
-
-'''
-forms.ValidationError(
-self.error_messages['email_dups'],
-code='email_dups',
-)
-'''
+        
