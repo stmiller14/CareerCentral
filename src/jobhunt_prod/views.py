@@ -33,7 +33,6 @@ from asyncio import run
 from os import environ, getcwd
 from django.contrib import messages
 from . import custom_form 
-import pandas as pd
 import xlsxwriter
 
 hold_data={}
