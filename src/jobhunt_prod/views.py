@@ -104,8 +104,8 @@ def index(request):
             hold_data=ret=multiprocess_simply.getrole_simply(role,location)
             request.session['site']=str(list(resp.keys())[-1])
         if'excel' in resp.keys():
-            excel_response=excel_download(request)
-            return excel_response
+            #excel_response=excel_download(request)
+            return excel_download(request)
             #return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
         return render(request, 'index.html', {'results': ret.values() , 'API_KEY' : API}  )
     else:
@@ -191,7 +191,6 @@ def excel_download(request):
 
 @csrf_exempt
 def excel_download(request):
-    import pandas as pd
     from io import BytesIO
     global hold_data
     c=0
