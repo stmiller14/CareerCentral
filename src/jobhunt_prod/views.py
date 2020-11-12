@@ -26,13 +26,17 @@ from django.views.decorators.cache import cache_control, never_cache
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import PasswordResetForm , UserCreationForm
 from asyncio import run
-from os import environ
+from os import environ, getcwd
 from django.contrib import messages
 from . import custom_form 
+import pandas as pd
+import xlsxwriter
+
+hold_data={}
 @csrf_exempt
 def reset_password(request):
     if request.method=='POST':
@@ -42,7 +46,6 @@ def reset_password(request):
         #print(sp.validate('Stephen'))
         print(sp.validate('stephenab'))
         '''
-
         my_form=PasswordResetForm(request.POST)
         if my_form.is_valid():
             email = my_form.cleaned_data["email"]
@@ -59,7 +62,6 @@ def change_password(request):
     return render(request, 'registration/password_reset_confirm.html'  )
 
 def reset_done(request):
-    print('after password change   ' , request.POST)
     return render(request, 'registration/password_reset_complete.html'  )
 
 def get_api():
@@ -79,6 +81,7 @@ def get_api():
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='/loginpage')
 def index(request):
+    global hold_data
     if not request.user.is_authenticated:
         return redirect('/loginpage')
     API=get_api()
@@ -87,19 +90,27 @@ def index(request):
             models.save_search(request.user.email, json.loads(request.body))
             return HttpResponse('')
         resp=request.POST
-        role, location =resp['rolename'] , resp['locationname']
+        request.session['role'], request.session['location']=resp['rolename'] , resp['locationname']
+        role, location =request.session['role'], request.session['location']
         if 'indeed.x' in resp.keys():
-            ret=list(Indeed().getrole(role, location).values())
+            hold_data=ret=Indeed().getrole(role, location)
+            request.session['site']=str(list(resp.keys())[-1])
         elif 'monster.x' in resp.keys():
-            ret=run(async_monster.getrole_monster(role, location)).values()
+            hold_data=ret=run(async_monster.getrole_monster(role, location))
+            request.session['site']=str(list(resp.keys())[-1])
         elif 'career.x' in resp.keys():
-            ret=list( builder.getrole_career(role,location).values()  )
+            hold_data=ret=builder.getrole_career(role,location) 
+            request.session['site']=str(list(resp.keys())[-1])
         elif 'glass.x' in resp.keys():
-            ret=list(multiprocess_simply.getrole_simply(role,location).values())
-            
-        return render(request, 'index.html', {'results': ret , 'API_KEY' : API}  )
+            hold_data=ret=multiprocess_simply.getrole_simply(role,location)
+            request.session['site']=str(list(resp.keys())[-1])
+        if'excel' in resp.keys():
+            excel_response=excel_download(request)
+            return excel_response
+            #return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
+        return render(request, 'index.html', {'results': ret.values() , 'API_KEY' : API}  )
     else:
-        return render(request, 'index.html', {'API_KEY' : API } )
+        return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
 
 
 
@@ -139,12 +150,9 @@ def saved_jobs(request):
 
 @csrf_exempt
 def register(request):
-    
     if request.method=='POST':
         user_form=custom_form.UserForm(request.POST)
-        
         if user_form.is_valid():
-            
             username = user_form.cleaned_data.get('username')
             password = user_form.cleaned_data.get('password1')
             firstname = user_form.cleaned_data.get('first_name')
@@ -153,38 +161,74 @@ def register(request):
             user=user_form.save()
             user = authenticate(username=username, password=password)
             login(request, user)
-            print('redirecting to home page for '  , firstname)
             return redirect( '/', {'user_name': User.first_name}  )
         return render( request  ,'register_user.html', {'form': user_form})
     else:
         user_form = custom_form.UserForm()
     return render(request,'register_user.html', {'form': user_form})
-         
+
 
 @csrf_exempt
 def save_job(request):
     pass
 
 
-
-
-
-
 '''
-        resp=request.POST
-        
-        try:
-            user = User.objects.create_user(resp['user_name'] , resp['email']  , resp['password'] )
-            user.first_name= resp['first_name'] 
-            user.last_name = resp['last_name'] 
-            user.is_active=True
-            user.save()
-            login(request, user)
-            return redirect( '/', {'user_name': 'First time user: ' + str(request.user.first_name)}  )
-        except IntegrityError:
-            return False
-        
+@csrf_exempt
+def excel_download(request):
+    global hold_data
+    c=0
+    test=hold_data
+    workbook = xlsxwriter.Workbook(getcwd()+'/excel/' + request.session['role']  + '_' + request.session['location']  + '_' + request.session['site'][:-1] + 'xlsx')
+    worksheet = workbook.add_worksheet()
+    for k , v in test.items():
+        c+=1
+        for x ,  data in enumerate(v):
+            worksheet.write_column(c, x, [data])  
+    workbook.close()
 '''
+
+
+
+@csrf_exempt
+def excel_download(request):
+    import pandas as pd
+    from io import BytesIO
+    global hold_data
+    c=0
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook( output)
+
+    worksheet = workbook.add_worksheet(request.session['site'][:-1] ) 
+    worksheet.write( 0 , 0 , 'Content for '  +  request.session['role']  + '  ' + request.session['location']   )
+    for k , v in hold_data.items():
+        c+=1
+        for x ,  data in enumerate(v):
+            worksheet.write_column(c, x, [data])  
+    workbook.close()
+    output.seek(0)
+    response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    return response
+    '''
+    global hold_data
+    c=0
+    test=hold_data
+    workbook = xlsxwriter.Workbook(getcwd()+'/excel/' + request.session['role']  + '_' + request.session['location']  + '_' + request.session['site'][:-1] + 'xlsx')
+    worksheet = workbook.add_worksheet()
+    for k , v in test.items():
+        c+=1
+        for x ,  data in enumerate(v):
+            worksheet.write_column(c, x, [data])  
+    workbook.close()
+    '''
+
+
+
+
+
+
+
+
 
 
 

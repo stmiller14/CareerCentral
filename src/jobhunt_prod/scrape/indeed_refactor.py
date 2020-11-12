@@ -37,9 +37,8 @@ class Indeed():
                 desc= desc_container.ul.li.text
             except AttributeError:
                 desc = ""
+            
             if  role.upper() in str(title).upper().strip():
-                print(url)
-                i+=1
                 all_data[ID]= [title , company.strip() , location ,desc,  href ]
             
                 
@@ -58,6 +57,7 @@ class Indeed():
         for t in threads:
             t.join()
         #cleaning the data
+
         for k, v in all_data.items():
             if k not in dups:
                 result[k]=v 

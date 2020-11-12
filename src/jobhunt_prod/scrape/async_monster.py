@@ -52,8 +52,9 @@ async def getrole_monster(role, location):
         get_monster(url + str(5) +url_end+str(5), role ),
         get_monster(url + str(6) +url_end+str(6), role ),
         get_monster(url + str(7) +url_end+str(7), role), 
+                
+        
      
-    
 
     )
     rawdata.update(alldata)
@@ -81,4 +82,6 @@ get_monster(url + str(16) +url_end+str(16), role),
 get_monster(url + str(8)+url_end+str(8), role), 
 get_monster(url + str(9) +url_end+str(9), role), 
 get_monster(url + str(10) +url_end+str(10), role), 
+
+
 '''
