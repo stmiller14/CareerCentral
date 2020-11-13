@@ -34,6 +34,7 @@ from os import environ, getcwd
 from django.contrib import messages
 from . import custom_form 
 import xlsxwriter
+from io import BytesIO
 
 hold_data={}
 @csrf_exempt
@@ -104,9 +105,7 @@ def index(request):
             hold_data=ret=multiprocess_simply.getrole_simply(role,location)
             request.session['site']=str(list(resp.keys())[-1])
         if'excel' in resp.keys():
-            #excel_response=excel_download(request)
             return excel_download(request)
-            #return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
         return render(request, 'index.html', {'results': ret.values() , 'API_KEY' : API}  )
     else:
         return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
@@ -115,6 +114,8 @@ def index(request):
 
 @csrf_exempt
 def loginpage(request):
+    global hold_data
+    hold_data.clear()
     logout(request)
     if request.method=='POST':
         resp=request.POST
@@ -129,8 +130,9 @@ def loginpage(request):
 
 @csrf_exempt
 def logoutuser(request):
+    global hold_data
+    hold_data.clear()
     logout(request)
-    print("in logout ")
     return redirect('/loginpage' , {'error':None})
 
 @csrf_exempt
@@ -172,56 +174,23 @@ def save_job(request):
     pass
 
 
-'''
-@csrf_exempt
-def excel_download(request):
-    global hold_data
-    c=0
-    test=hold_data
-    workbook = xlsxwriter.Workbook(getcwd()+'/excel/' + request.session['role']  + '_' + request.session['location']  + '_' + request.session['site'][:-1] + 'xlsx')
-    worksheet = workbook.add_worksheet()
-    for k , v in test.items():
-        c+=1
-        for x ,  data in enumerate(v):
-            worksheet.write_column(c, x, [data])  
-    workbook.close()
-'''
-
 
 
 @csrf_exempt
 def excel_download(request):
-    from io import BytesIO
     global hold_data
     c=0
     output = BytesIO()
     workbook = xlsxwriter.Workbook( output)
-
     worksheet = workbook.add_worksheet(request.session['site'][:-1] ) 
-    worksheet.write( 0 , 0 , 'Content for '  +  request.session['role']  + '  ' + request.session['location']   )
+    worksheet.write( 0 , 0 ,  'Role: ' + request.session['role']  + ' Location:' + request.session['location']   )
     for k , v in hold_data.items():
         c+=1
         for x ,  data in enumerate(v):
             worksheet.write_column(c, x, [data])  
     workbook.close()
     output.seek(0)
-    response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    return response
-    '''
-    global hold_data
-    c=0
-    test=hold_data
-    workbook = xlsxwriter.Workbook(getcwd()+'/excel/' + request.session['role']  + '_' + request.session['location']  + '_' + request.session['site'][:-1] + 'xlsx')
-    worksheet = workbook.add_worksheet()
-    for k , v in test.items():
-        c+=1
-        for x ,  data in enumerate(v):
-            worksheet.write_column(c, x, [data])  
-    workbook.close()
-    '''
-
-
-
+    return HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
 
