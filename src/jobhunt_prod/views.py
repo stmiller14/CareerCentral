@@ -35,7 +35,7 @@ from django.contrib import messages
 from . import custom_form 
 import xlsxwriter
 from io import BytesIO
-
+from .api_generation import Generate_Token, Api_Response
 hold_data={}
 @csrf_exempt
 def reset_password(request):
@@ -196,8 +196,9 @@ def excel_download(request, API):
     return HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
-
-
+def generate_token(request):
+    print('in generate API')
+    return Generate_Token(request.user.email )
 
 
 

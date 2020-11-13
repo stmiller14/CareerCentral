@@ -16,7 +16,7 @@ anaconda3/lib/python3.7/site-packages/django/contrib/auth
 from django.contrib import admin
 from django.urls import path , include
 from . import views 
-
+from .api_generation import Api_Response
 urlpatterns = [
     path('', views.index, name='index'),
     path('<int:year>', views.returnyear , kwargs= { 'name' : 'SM'} , name="returnyear"  ), 
@@ -31,6 +31,7 @@ urlpatterns = [
     path('accounts/login/',views.loginpage,name="loginpage"),
     path('accounts/', include('django.contrib.auth.urls')), # new
     path('accounts/reset/MQ/set-password/', views.change_password, name="changepassword"),
-    path('accounts/reset/done/', views.reset_done, name="reset_done")
+    path('accounts/reset/done/', views.reset_done, name="reset_done"),
+    path('api/<str:token>/<str:role>/<str:location>', Api_Response.response ) 
     
 ]

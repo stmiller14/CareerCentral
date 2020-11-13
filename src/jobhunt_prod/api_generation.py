@@ -1,13 +1,18 @@
 
 '''
-
+careercentral.herokuapp.com/API=123,role=python, location=New York
 '''
 from django.http import HttpResponse, StreamingHttpResponse
+import json 
+from .scrape.indeed_refactor import Indeed
+from .scrape import multiprocess_simply, multithread_simply, async_monster, builder
+from django.contrib.auth.models import User
+import secrets
 
-active_keys=set()
+active_keys={'stephendmiller14@gmail.com' : '123'}
 
 
-class Generate_API():
+class Generate_Token():
     '''
     return a web link that returns an HttpResponse JSON object
     serializable, bytesIO
@@ -21,50 +26,51 @@ class Generate_API():
 
     '''
 
-    def __init__(self, engine , role , location): 
-        self.engine=engine
-        self.role=role
-        self.location=location
-        self.json_obj={}
+    def __init__(self, email): 
         self.key=None
+        self.email=email
         self.errors={}
         
-
-    def request(self, email ):
-        '''
-        get request from user. pass in email
-        if valid email call response
-        '''
-        
-
     def activate_key(self):
-        '''
-        create a long key and store in valid key set
-        '''
-        pass
+        token=secrets.token_urlsafe(10)
+        active_keys[self.email]=token
+        return token
+
+        
 
     def is_valid_key(self, key):
         is_valid=False
-        if key in active_keys:
+        if key in active_keys.values():
             is_valid=True
         return is_valid
 
-    def response(self):
-        if self.is_valid_key(self.activate_key()):
-            try:
-                '''
-                query the system from the scrape scrips
-                '''
-                from views import hold_data
-                self.json_obj=hold_data
-                return HttpResponse(self.json_obj)
-            except ImportError:
-                self.errors[1]= 'ImportError'
-
-            
-        else:
-            self.error_handler()
-
+    def getkey(self, email) :
+        return active_keys[self.email]
 
     def error_handler(self):
+        self.errors={"1" : "error"}
+        return HttpResponse(self.errors)
+
+
+class Api_Response():
+    
+    def response(self, token, role , location):
+        self.errors={'error':'errors'}
+        if token in active_keys.values():
+            ret=Indeed().getrole(role, location)
+            return HttpResponse (
+                json.dumps({ 
+                    'token': token, 
+                    'role': role, 
+                    'location': location, 
+                    'ret': ret
+                    }))
+
+        else:
+            return HttpResponse( json.dumps(
+                    self.errors
+                    ))
+
+    def error_handler(self):
+        self.errors={"1" : "error"}
         return HttpResponse(self.errors)
