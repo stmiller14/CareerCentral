@@ -53,22 +53,21 @@ class Generate_Token():
 
 
 class Api_Response():
-    
+
     def response(self, token, role , location):
         self.errors={'error':'errors'}
         if token in active_keys.values():
             ret=Indeed().getrole(role, location)
             return HttpResponse (
                 json.dumps({ 
-                    'token': token, 
-                    'role': role, 
-                    'location': location, 
-                    'ret': ret
-                    }))
+                    'Role': role, 
+                    'Location': location, 
+                    'Jobs': ret
+                    }  , indent=4))
 
         else:
             return HttpResponse( json.dumps(
-                    self.errors
+                    {'error':'invalid key '}
                     ))
 
     def error_handler(self):
