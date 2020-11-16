@@ -13,18 +13,6 @@ active_keys={'stephendmiller14@gmail.com' : '123'}
 
 
 class Generate_Token():
-    '''
-    return a web link that returns an HttpResponse JSON object
-    serializable, bytesIO
-    careerapp.API=key,role=?, location=?, engine=?.com
-    Generate an API key.. one allowed per email at a time
-
-
-    error messages to catch
-    1. email is not registered
-    2. user already has active key
-
-    '''
 
     def __init__(self, email): 
         self.key=None
@@ -34,9 +22,9 @@ class Generate_Token():
     def activate_key(self):
         token=secrets.token_urlsafe(10)
         active_keys[self.email]=token
+        print('token is ' , token , self.email)
+        print('all keys ', active_keys)
         return token
-
-        
 
     def is_valid_key(self, key):
         is_valid=False

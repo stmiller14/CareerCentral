@@ -178,6 +178,7 @@ def save_job(request):
 
 @csrf_exempt
 def excel_download(request, API):
+    generate_token(request)
     global hold_data
     c=0
     output = BytesIO()
@@ -197,8 +198,8 @@ def excel_download(request, API):
 
 
 def generate_token(request):
-    print('in generate API')
-    return Generate_Token(request.user.email )
+    print('in generate API' , request.user.email)
+    Generate_Token(request.user.email ).activate_key()
 
 
 
