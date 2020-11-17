@@ -82,6 +82,7 @@ def get_api():
 @login_required(login_url='/loginpage')
 def index(request):
     global hold_data
+    ret={}
     if not request.user.is_authenticated:
         return redirect('/loginpage')
     API=get_api()
@@ -106,7 +107,9 @@ def index(request):
             request.session['site']=str(list(resp.keys())[-1])
         if'excel' in resp.keys():
             return excel_download(request, API )
-        return render(request, 'index.html', {'results': ret.values() , 'API_KEY' : API}  )
+        if 'generate_key' in resp.keys():
+            return generate_token(request, API)
+        return render(request, 'index.html', {'results': ret.values() ,  'API_KEY' : API}  )
     else:
         return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
 
@@ -178,7 +181,6 @@ def save_job(request):
 
 @csrf_exempt
 def excel_download(request, API):
-    generate_token(request)
     global hold_data
     c=0
     output = BytesIO()
@@ -196,10 +198,11 @@ def excel_download(request, API):
         return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
     return HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
+@csrf_exempt
+def generate_token(request, API):
+    token=Generate_Token(request.user.email ).activate_key()
+    return render(request, 'index.html', {'token': token, 'API_KEY' : API}  )
 
-def generate_token(request):
-    print('in generate API' , request.user.email)
-    Generate_Token(request.user.email ).activate_key()
 
 
 

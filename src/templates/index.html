@@ -142,17 +142,15 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         contentType: "application/json",
         data: JSON.stringify('logout'), 
           success: function(data) {
-              console.log('success ajax request ');
+              
             
           },
           error: function(e){
             console.log('bad  ajax request ' + e);
           }
     });
-
-   
-
   }
+ 
 
   
 
@@ -357,7 +355,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         {% endif %}
       <form  role="form" name="formname" action="{% url 'index' %}" onkeydown="return event.key != 'Enter';"  onclick="return IsEmpty();" style="width:400px; margin: 0 auto;" method="post">
         {% csrf_token %} 
-        <button class="btn"   type="submit" value="logoutuser"    id=logoutuser name=logoutuser style="float: right; margin-left: 5%;" onclick= "logout_clicked()">  Login</button>
+        <button class="btn"   type="submit" value="generate_key"    id=generate_key name=generate_key style="float: right; margin-left: 5%;"> Api Key</button>
           <button class="btn"   type="submit" value="logoutuser"  id=logoutuser name=logoutuser style="float: right; " onclick= "logout_clicked()"> Logout</button>
         <!--
         <a  href="/loginpage" class="btn"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
@@ -454,6 +452,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                       <table class="table" id="table_id" cellspacing="0"> 
+                        <p>  {{token}} </p>
                             {% for  result in results %}
                               {% with rowloop=loop %}
                               {%endwith%}
@@ -504,9 +503,10 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
     }
 
   </script>
-  
+
 
   <script
+ 
   src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}a0ZG6s&libraries=places&callback=initMap"
   async defer>
 </script>
