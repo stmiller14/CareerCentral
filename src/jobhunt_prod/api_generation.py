@@ -44,7 +44,7 @@ class Api_Response():
 
     def response(self, token, role , location):
         self.errors={'error':'errors'}
-        if token in active_keys.values():
+        if str(token) in active_keys.values():
             ret=Indeed().getrole(role, location)
             return HttpResponse (
                 json.dumps({ 
