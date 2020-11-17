@@ -13,7 +13,7 @@ active_keys={'stephendmiller14@gmail.com' : '123'}
 
 
 class Generate_Token():
-
+    global active_keys
     def __init__(self, email): 
         self.key=None
         self.email=email
@@ -41,7 +41,7 @@ class Generate_Token():
 
 
 class Api_Response():
-
+    global active_keys
     def response(self, token, role , location):
         self.errors={'error':'errors'}
         print('the active keys are ' ,  active_keys)
