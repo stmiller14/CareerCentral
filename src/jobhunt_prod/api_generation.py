@@ -6,6 +6,7 @@ from django.http import HttpResponse, StreamingHttpResponse
 import json 
 from .scrape.indeed_refactor import Indeed
 from .scrape import multiprocess_simply, multithread_simply, async_monster, builder
+from.scrape.async_monster import run
 from django.contrib.auth.models import User
 import secrets
 from .models import getkey, insert_key, get_allkeys
@@ -55,7 +56,7 @@ class Generate_Token():
         return HttpResponse(self.errors)
 
 class Api_Response():
-    def response(self, token, role , location):
+    def response(self, token, role , location, engine):
         active_keys=Generate_Token('api').getallkeys()
         
         self.errors={'error':'errors'}
@@ -63,7 +64,18 @@ class Api_Response():
         #if str(token) in active_keys.values():
         #if token in get_allkeys():
         if (any(token in i for i in get_allkeys())) :
-            ret=Indeed().getrole(role, location)
+            if engine=='Indeed':
+                ret=Indeed().getrole(role, location)
+            elif engine=='Simply':
+                ret=multiprocess_simply.getrole_simply(role,location)
+            elif engine=='Builder':
+                ret=builder.getrole_career(role,location) 
+            elif engine=='Monster':
+                ret=run(async_monster.getrole_monster(role, location))
+            else:
+                return HttpResponse( json.dumps(
+                    {'error':   'Please use correct engine name '}
+                    ))
             return HttpResponse (
                 json.dumps({ 
                     'Role': role, 

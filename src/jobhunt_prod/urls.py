@@ -31,6 +31,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')), # new
     path('accounts/reset/MQ/set-password/', views.change_password, name="changepassword"),
     path('accounts/reset/done/', views.reset_done, name="reset_done"),
-    path('api/<str:token>/<str:role>/<str:location>', Api_Response.response ) 
+    path('api/<str:token>/<str:role>/<str:location>/<str:engine>', Api_Response.response ) 
     
 ]
