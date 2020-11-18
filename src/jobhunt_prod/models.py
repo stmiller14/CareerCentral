@@ -36,3 +36,34 @@ def delete_job( email , data):
     cursor=initialize_connection()
     cursor.execute(""" delete from public."jobs"  where email  =  %s and junk3 = %s""" , (email, data[1] ))
     connection.commit()
+
+
+def getkey(email):
+    cursor=initialize_connection()
+    cursor.execute("""  select public_key from public."api_config"  where email  =  %s """ , (email, ))
+    return str(cursor.fetchone())
+
+def has_key(email):
+    cursor=initialize_connection()
+    cursor.execute("""  select email from public."api_config"  where email  =  %s """ , (email,))
+    return cursor.rowcount
+    
+def get_allkeys():
+    cursor=initialize_connection()
+    cursor.execute("""  select public_key from public."api_config" """ )
+    return set(cursor.fetchall())
+
+
+def insert_key(email, public_key ):
+    cursor=initialize_connection()
+    if has_key(email) == 0:
+        insert_key= """ insert into  public."api_config" (email, public_key ) values (%s, %s)  """ 
+        cursor.execute(insert_key, tuple([email, public_key]))
+        connection.commit()
+    else:
+        update_key = """ update  public."api_config" set  public_key= %s where email  =  %s """ 
+        cursor.execute(update_key, (public_key, email))
+        connection.commit()
+
+
+

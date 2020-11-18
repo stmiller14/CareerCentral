@@ -8,8 +8,14 @@ from .scrape.indeed_refactor import Indeed
 from .scrape import multiprocess_simply, multithread_simply, async_monster, builder
 from django.contrib.auth.models import User
 import secrets
+from .models import getkey, insert_key, get_allkeys
 
+'''
+class variables handling weird in heroku environ. Due to multiple processes
+handling http requests. maybe save the api key in the db
+in api key table 
 
+'''
 
 class Generate_Token():
     active_keys={'stephendmiller14@gmail.com' : '123'}
@@ -22,6 +28,7 @@ class Generate_Token():
     def activate_key(self):
         token=secrets.token_urlsafe(10)
         self.addtoactive(self.email, token)
+        insert_key(self.email, token)
         return token
 
     def is_valid_key(self, key):
@@ -29,6 +36,10 @@ class Generate_Token():
         if key in self.getallkeys():
             is_valid=True
         return is_valid
+    
+    def get_userkey(self):
+        return getkey(self.email)
+
 
 
     @classmethod
@@ -46,9 +57,12 @@ class Generate_Token():
 class Api_Response():
     def response(self, token, role , location):
         active_keys=Generate_Token('api').getallkeys()
+        
         self.errors={'error':'errors'}
         print('the active keys are ' ,  active_keys)
-        if str(token) in active_keys.values():
+        #if str(token) in active_keys.values():
+        #if token in get_allkeys():
+        if (any(token in i for i in get_allkeys())) :
             ret=Indeed().getrole(role, location)
             return HttpResponse (
                 json.dumps({ 
@@ -59,7 +73,7 @@ class Api_Response():
 
         else:
             return HttpResponse( json.dumps(
-                    {'error':'invalid key '}
+                    {'error':   'invalid key '}
                     ))
 
     def error_handler(self):
