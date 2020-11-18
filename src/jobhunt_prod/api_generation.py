@@ -31,12 +31,6 @@ class Generate_Token():
         self.addtoactive(self.email, token)
         insert_key(self.email, token)
         return token
-
-    def is_valid_key(self, key):
-        is_valid=False
-        if key in self.getallkeys():
-            is_valid=True
-        return is_valid
     
     def get_userkey(self):
         return getkey(self.email)
@@ -57,12 +51,9 @@ class Generate_Token():
 
 class Api_Response():
     def response(self, token, role , location, engine):
-        active_keys=Generate_Token('api').getallkeys()
-        
+        active_keys=Generate_Token('api').getallkeys() 
         self.errors={'error':'errors'}
-        print('the active keys are ' ,  active_keys)
-        #if str(token) in active_keys.values():
-        #if token in get_allkeys():
+        engines=['Indeed', 'Monster', 'Simply', 'Builder']
         if (any(token in i for i in get_allkeys())) :
             if engine=='Indeed':
                 ret=Indeed().getrole(role, location)
@@ -74,7 +65,7 @@ class Api_Response():
                 ret=run(async_monster.getrole_monster(role, location))
             else:
                 return HttpResponse( json.dumps(
-                    {'error':   'Please use correct engine name '}
+                    {'error':  '{}_{}'.format('Please use a valid engine name ', engines}
                     ))
             return HttpResponse (
                 json.dumps({ 
