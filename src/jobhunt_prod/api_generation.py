@@ -65,7 +65,7 @@ class Api_Response():
                 ret=run(async_monster.getrole_monster(role, location))
             else:
                 return HttpResponse( json.dumps(
-                    {'error':  '{}_{}'.format('Please use a valid engine name ', engines}
+                    {'error':  '{} {}'.format('Please use a valid engine name ', engines)}
                     ))
             return HttpResponse (
                 json.dumps({ 
@@ -76,7 +76,7 @@ class Api_Response():
 
         else:
             return HttpResponse( json.dumps(
-                    {'error':   'invalid key '}
+                    {'error': '{} {}'.format( token , ' is an invalid token ')}
                     ))
 
     def error_handler(self):
