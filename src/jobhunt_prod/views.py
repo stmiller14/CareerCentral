@@ -36,7 +36,7 @@ from . import custom_form
 import xlsxwriter
 from io import BytesIO
 from .api_generation import Generate_Token, Api_Response
-hold_data={}
+
 @csrf_exempt
 def reset_password(request):
     if request.method=='POST':
@@ -81,11 +81,10 @@ def get_api():
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='/loginpage')
 def index(request):
-    global hold_data
     ret={}
+    API=get_api()
     if not request.user.is_authenticated:
         return redirect('/loginpage')
-    API=get_api()
     if request.method=='POST':
         if 'rolename' not in request.POST.keys():
             models.save_search(request.user.email, json.loads(request.body))
@@ -93,32 +92,40 @@ def index(request):
         resp=request.POST
         request.session['role'], request.session['location']=resp['rolename'] , resp['locationname']
         role, location =request.session['role'], request.session['location']
-        if 'indeed.x' in resp.keys():
-            hold_data=ret=Indeed().getrole(role, location)
-            request.session['site']=str(list(resp.keys())[-1])
-        elif 'monster.x' in resp.keys():
-            hold_data=ret=run(async_monster.getrole_monster(role, location))
-            request.session['site']=str(list(resp.keys())[-1])
-        elif 'career.x' in resp.keys():
-            hold_data=ret=builder.getrole_career(role,location) 
-            request.session['site']=str(list(resp.keys())[-1])
-        elif 'glass.x' in resp.keys():
-            hold_data=ret=multiprocess_simply.getrole_simply(role,location)
-            request.session['site']=str(list(resp.keys())[-1])
+        
+        if any('.x' in k for k in resp.keys()):
+            if 'indeed.x' in resp.keys():
+                ret=Indeed().getrole(role, location)
+                request.session['site']=str(list(resp.keys())[-1])
+            elif 'monster.x' in resp.keys():
+                ret=run(async_monster.getrole_monster(role, location))
+                request.session['site']=str(list(resp.keys())[-1])
+            elif 'career.x' in resp.keys():
+                ret=builder.getrole_career(role,location) 
+                request.session['site']=str(list(resp.keys())[-1])
+            elif 'glass.x' in resp.keys():
+                ret=multiprocess_simply.getrole_simply(role,location)
+                request.session['site']=str(list(resp.keys())[-1])
+            request.session['hold_data']=ret
         if'excel' in resp.keys():
-            return excel_download(request, API )
+            try:
+                return excel_download(request, request.session['hold_data'],  API )
+            except UnboundLocalError:
+                return excel_download(request, {'error' :'error'} ,   API)
         if 'generate_key' in resp.keys():
-            return generate_token(request, API)
+            return generate_token(request,   API)
         return render(request, 'index.html', {'results': ret.values() ,  'API_KEY' : API}  )
     else:
-        return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
+        try:
+            return render(request, 'index.html', {'results': request.session['hold_data'].values() , 'API_KEY' : API}  )
+        except KeyError:
+            return render(request, 'index.html', {'API_KEY' : API}  )
 
 
 
 @csrf_exempt
 def loginpage(request):
-    global hold_data
-    hold_data.clear()
+    request.session['hold_data']={}
     logout(request)
     if request.method=='POST':
         resp=request.POST
@@ -133,8 +140,7 @@ def loginpage(request):
 
 @csrf_exempt
 def logoutuser(request):
-    global hold_data
-    hold_data.clear()
+    request.session['hold_data']={}
     logout(request)
     return redirect('/loginpage' , {'error':None})
 
@@ -180,22 +186,21 @@ def save_job(request):
 
 
 @csrf_exempt
-def excel_download(request, API):
-    global hold_data
+def excel_download(request, ret ,  API):
     c=0
     output = BytesIO()
     workbook = xlsxwriter.Workbook( output)
     try:
         worksheet = workbook.add_worksheet(request.session['site'][:-1] ) 
         worksheet.write( 0 , 0 ,  'Role: ' + request.session['role']  + ' Location:' + request.session['location']   )
-        for k , v in hold_data.items():
+        for k, v in ret.items():
             c+=1
             for x ,  data in enumerate(v):
                 worksheet.write_column(c, x, [data])  
         workbook.close()
         output.seek(0)
     except KeyError:
-        return render(request, 'index.html', {'results': hold_data.values() , 'API_KEY' : API}  )
+        return render(request, 'index.html', {'results': ret.values() , 'API_KEY' : API}  )
     return HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 @csrf_exempt
