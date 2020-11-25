@@ -1,6 +1,6 @@
 from django.db import models, connection
 from datetime import datetime
-#DB processing here 
+#handle DB processing here 
 
 
 

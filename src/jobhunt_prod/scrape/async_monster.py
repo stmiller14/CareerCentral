@@ -16,18 +16,15 @@ async def get_monster(url, role):
     async with ClientSession() as session:
         async with session.get(url, headers={'User-Agent': 'Mozilla/5.0'}) as response:
             text= await response.text()
-            print(url )
             soup = BeautifulSoup(text, 'html.parser')
             summary_container= soup.find_all('div', {'class': ['summary']})
-            
             for i, container in enumerate(summary_container):
                 title=None
                 try:
                     title=container.h2.a.text #job title 
                     href=container.a['href'] #a tag href attribute within the title class 
                 except:
-                    print("no attribute a or jobs dont exist")
-                    
+                    pass
                 if title is not None and role.upper() in str(title).upper().strip():
                     company=container.span.text
                     location = soup.find("span" , string=company).find_next("span").text.strip()
@@ -36,7 +33,7 @@ async def get_monster(url, role):
 
 async def getrole_monster(role, location):
     locate=location
-    rawdata={}  
+    rawdata, result={}, {}
     if "," in location:
         location=location.split(',')
         if len(location)>=2:
@@ -52,14 +49,8 @@ async def getrole_monster(role, location):
         get_monster(url + str(5) +url_end+str(5), role ),
         get_monster(url + str(6) +url_end+str(6), role ),
         get_monster(url + str(7) +url_end+str(7), role), 
-                
-        
-     
-
     )
     rawdata.update(alldata)
-    #cleaning the data
-    result={}
     for k, v in rawdata.items():
         if v not in result.values():
             result[k]=v 

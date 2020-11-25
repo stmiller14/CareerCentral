@@ -1,17 +1,6 @@
 '''
-update this template to set users password 
-http://127.0.0.1:8000/accounts/reset/Ng/set-password/
-'''
-'''
-#easy eay to check if email exists wit the User class
-#User.objects.filter(email=email).exists():
-print("users with thtat email "  ,my_form.get_users(email).__next__())
-
-
-
-all_users=User.objects.all()
-print(' all thje users ' , all_users)
-
+refactor global var to a request.session[]=x to handle scaling http requests within heroku
+login required decorator for searching
 '''
 
 
@@ -76,7 +65,6 @@ def get_api():
         API_KEY = environ.get('API_KEY', None)
     return API_KEY
 
-
 @never_cache
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required(login_url='/loginpage')
@@ -120,8 +108,6 @@ def index(request):
             return render(request, 'index.html', {'results': request.session['hold_data'].values() , 'API_KEY' : API}  )
         except KeyError:
             return render(request, 'index.html', {'API_KEY' : API}  )
-
-
 
 @csrf_exempt
 def loginpage(request):
@@ -177,13 +163,9 @@ def register(request):
         user_form = custom_form.UserForm()
     return render(request,'register_user.html', {'form': user_form})
 
-
 @csrf_exempt
 def save_job(request):
     pass
-
-
-
 
 @csrf_exempt
 def excel_download(request, ret ,  API):
@@ -193,7 +175,7 @@ def excel_download(request, ret ,  API):
     try:
         worksheet = workbook.add_worksheet(request.session['site'][:-1] ) 
         worksheet.write( 0 , 0 ,  'Role: ' + request.session['role']  + ' Location:' + request.session['location']   )
-        for k, v in ret.items():
+        for  v in ret.values():
             c+=1
             for x ,  data in enumerate(v):
                 worksheet.write_column(c, x, [data])  
@@ -223,27 +205,12 @@ def generate_token(request, API):
 #########################################
 
 
-
-
-'''
-def register(request):
-    if request.method=='POST':
-        resp=request.POST
-        username, email, password=resp['username'] , resp['email'],  resp['password']
-        if login.createuser(username, email, password):
-            redirect('/')
-
-'''
-
-
 def returnyear(request, year, **kwargs):
     
-    return HttpResponse(' in test year %s %s ' % (year, kwargs))
-
-    '''
+    #return HttpResponse(' in test year %s %s ' % (year, kwargs))
     return HttpResponse (
         json.dumps({ 
             'year': year, 
             'name': kwargs['name'] 
             }))
-    '''
+    

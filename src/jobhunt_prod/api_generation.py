@@ -13,14 +13,12 @@ from .models import getkey, insert_key, get_allkeys
 
 '''
 class variables handling weird in heroku environ. Due to multiple processes
-handling http requests. maybe save the api key in the db
-in api key table 
+handling http requests. solution: save the api key in the db in a email:token table with email as pk
 
 '''
 
 class Generate_Token():
-    active_keys={'stephendmiller14@gmail.com' : '123'}
-
+    active_keys={}
     def __init__(self, email): 
         self.key=None
         self.email=email
@@ -34,9 +32,6 @@ class Generate_Token():
     
     def get_userkey(self):
         return getkey(self.email)
-
-
-
     @classmethod
     def addtoactive(cls, email, token):
         cls.active_keys[email]=token
