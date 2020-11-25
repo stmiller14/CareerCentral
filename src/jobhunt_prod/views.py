@@ -7,7 +7,7 @@ login required decorator for searching
 
 import json 
 from .scrape.indeed_refactor import Indeed
-from .scrape import multiprocess_simply, multithread_simply, async_monster, builder
+from .scrape import multiprocess_simply, multithread_simply, async_monster, builder, linkedin
 from . import models
 from django.db.utils import IntegrityError
 from django.contrib.auth import authenticate, login, logout
@@ -94,6 +94,8 @@ def index(request):
             elif 'glass.x' in resp.keys():
                 ret=multiprocess_simply.getrole_simply(role,location)
                 request.session['site']=str(list(resp.keys())[-1])
+            elif 'link.x' in resp.keys():
+                ret=linkedin.start(role, location)
             request.session['hold_data']=ret
         if'excel' in resp.keys():
             try:

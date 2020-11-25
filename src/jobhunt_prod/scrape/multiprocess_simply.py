@@ -18,7 +18,7 @@ def get_simply(url, role ):
         content_container= soup.find_all('div', {'class': ['SerpJob-jobCard']})
         link= 'https://www.simplyhired.com'
     except AttributeError:
-            pass
+        pass
     for content in content_container:
         title, href=None , None
         try:
