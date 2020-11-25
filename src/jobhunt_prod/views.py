@@ -96,6 +96,7 @@ def index(request):
                 request.session['site']=str(list(resp.keys())[-1])
             elif 'link.x' in resp.keys():
                 ret=linkedin.start(role, location)
+                request.session['site']=str(list(resp.keys())[-1])
             request.session['hold_data']=ret
         if'excel' in resp.keys():
             try:
