@@ -80,7 +80,7 @@ def index(request):
         resp=request.POST
         request.session['role'], request.session['location']=resp['rolename'] , resp['locationname']
         role, location =request.session['role'], request.session['location']
-        
+        print(' the request post' , request.POST.keys() ) ; 
         if any('.x' in k for k in resp.keys()):
             if 'indeed.x' in resp.keys():
                 ret=Indeed().getrole(role, location)
