@@ -22,9 +22,9 @@ def get_simply(url, role ):
     for content in content_container:
         title, href=None , None
         try:
-            title=content.h2.text
-            href=content.h2.a['href']
-            company=content.h3.text
+            title=content.a.text
+            href=content.a['href']
+            company=content.span.text
             summary=content.p.text
         except TypeError:
             pass
