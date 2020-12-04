@@ -5,6 +5,7 @@ import sys
 
 
 def main():
+    print("test repo")
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'jobhunt_prod.settings')
     try:
