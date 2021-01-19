@@ -184,9 +184,10 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
          setTimeout(function(){ disable() }, 1);
          rolevar= $('#role_id').val();
          locationvar=$('#pac-input').val();
+       optionskey= $('#optionsID').val();
          localStorage.setItem("role_key", rolevar);
          localStorage.setItem("location_key", locationvar);
-        if(rolevar && locationvar){
+        if(rolevar && locationvar && optionskey){
          $("#content").show();
          $("input[type=image]").removeAttr('disabled');
         }
@@ -408,18 +409,18 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
     </div>
     <div>  </div>
 
-    <div class="form-group time_zone required user_tz"><select class="form-control time_zone required" name="optionsname" id="optionsID"><option value="">Select a Job Search Engine</option>
+     <select class="form-control time_zone required" name="optionsname" id="optionsID" required ><option value="">Select a Job Search Engine</option>
       <option name= "monster" value="monster">Monster</option>
       <option name= "glass" value="glass">Simply Hired</option>
       <option name= "career" value="career">Career Builder</option>
       <option name= "link"   value="link">Linkedin</option> 
-     </select></div>
+     </select>
 
-     
+     <br></br>
      <button class="btn" id="save_item" value ="save_item"  name= "save_item" type="button" id= "Save_Click" onclick= "save_check()">Save Search</button>
      <input class="btn" id= "redirect_save" value ="Saved Jobs"  onclick= " window.location.href = '/saved_jobs'; " > </input>
      <button class="btn" id="excel" value ="excel"  name= "excel" type="Submit" >Download To Excel</button>
-     <button class="btn" id="search" value ="search"  name= "search" onclick= "loading()"  type="Submit" >Search</button>
+     <button class="btn" id="searchID" value ="search"  name= "search" onclick= "loading()"  type="Submit" >Search</button>
  
    
 
