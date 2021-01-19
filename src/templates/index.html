@@ -360,7 +360,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
         {% endif %}
       <form  role="form" name="formname" action="{% url 'index' %}" onkeydown="return event.key != 'Enter';"  onclick="return IsEmpty();" style="width:400px; margin: 0 auto;" method="post">
         {% csrf_token %} 
-        <button class="btn"   type="submit" value="generate_key"    id=generate_key name=generate_key style="float: right; margin-left: 5%;"> Api Key</button>
+       <!-- <button class="btn"   type="submit" value="generate_key"    id=generate_key name=generate_key style="float: right; margin-left: 5%;"> Api Key</button>--> 
           <button class="btn"   type="submit" value="logoutuser"  id=logoutuser name=logoutuser style="float: right; " onclick= "logout_clicked()"> Logout</button>
         <!--
         <a  href="/loginpage" class="btn"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
@@ -432,7 +432,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
   <div class="col-xl-9 mx-auto">
   <div class="buttonclass">
     <div>Click an Image</div>
-    <input  type="image" name= "indeed"  id="indeed_button"  value="indeed_submit" src="/static/indeedlogo.png"    onclick= "loading()" width="120" height="120" >
+  <!--  <input  type="image" name= "indeed"  id="indeed_button"  value="indeed_submit" src="/static/indeedlogo.png"    onclick= "loading()" width="120" height="120" >-->
     <input type="image"  name= "monster"  id="monster_button" src="/static/monsterlogo.png" value="monster_submit"  onclick= "loading()"  width="70" height="70">
     <input type="image"  name= "glass"  id="glass_button" src="/static/glass.png" value="glass_submit"  onclick= "loading()"  width="100" height="100">
     <input type="image"  name= "career"  id="simply_button" src="/static/simplyhired.png" value="simply_submit"  onclick= "loading()"  width="200" height="200"> 
