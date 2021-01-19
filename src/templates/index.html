@@ -179,7 +179,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
  
 
 
-                   
+      //Bug Fix :: if Options is Blank need to let user know in this function
      function loading(){
          setTimeout(function(){ disable() }, 1);
          rolevar= $('#role_id').val();
@@ -409,7 +409,7 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
     </div>
     <div>  </div>
 
-     <select class="form-control time_zone required" name="optionsname" id="optionsID" required ><option value="">Select a Job Search Engine</option>
+     <select class="form-control time_zone required" name="optionsname" id="optionsID" formnovalidate ><option value="">Select a Job Search Engine</option>
       <option name= "monster" value="monster">Monster</option>
       <option name= "glass" value="glass">Simply Hired</option>
       <option name= "career" value="career">Career Builder</option>
