@@ -33,10 +33,19 @@ https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-
 import os 
 
 from pathlib import Path
-
+import sys
 
 DB_PASS=""
 EMAIL_HOST_PASSWORD=""
+
+if 'test' in sys.argv:
+    SECRET_KEY="123"
+
+
+
+
+
+
 if not os.environ.get('IS_HEROKU', False):
     try: 
         from . import conf
@@ -49,7 +58,10 @@ else:
     SECRET_KEY = os.environ.get('APP_KEY', None)
     EMAIL_HOST_PASSWORD =os.environ.get('EMAILPASSWORD', None)
     DB_PASS=os.environ.get('PASSWORD', None)
-        
+
+
+
+
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' # os.environ.get('EMAILHOST', None)

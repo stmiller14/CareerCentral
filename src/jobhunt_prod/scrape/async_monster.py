@@ -41,6 +41,7 @@ async def getrole_monster(role, location):
                  
     url='https://www.monster.com/jobs/search/?q= ' +role+ '&where='+locate+' &stpage='
     url_end="&page=" 
+    '''
     await gather(
         get_monster(url + str(1) +url_end+str(1),  role ),
         get_monster(url + str(2) +url_end+str(2), role),
@@ -49,6 +50,19 @@ async def getrole_monster(role, location):
         get_monster(url + str(5) +url_end+str(5), role ),
         get_monster(url + str(6) +url_end+str(6), role ),
         get_monster(url + str(7) +url_end+str(7), role), 
+    )
+    '''
+    url='https://www.monster.com/jobs/search?q=%20' + role + '&amp;where=' 
+    url_end='&amp;page='
+    await gather(
+        get_monster( url + str(1) +url_end + str(1) ,  role ),
+        get_monster( url + str(2) +url_end + str(2) ,  role ),
+        get_monster( url + str(3) +url_end + str(3) ,  role ),
+        get_monster( url + str(4) +url_end + str(4) ,  role ),
+        get_monster( url + str(5) +url_end + str(5) ,  role ),
+        get_monster( url + str(6) +url_end + str(6) ,  role )
+        
+
     )
     rawdata.update(alldata)
     for k, v in rawdata.items():
