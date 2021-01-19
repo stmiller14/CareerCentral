@@ -382,62 +382,75 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
           <h1 class="mb-5">Career Central </h1>
           <p> The Centralized hub for all Jobs </p>
         </div>
-        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-              
-              
-        
-        <div class="required-field-block">
-            <input type="text" id="role_id" placeholder="Role - required"  class="form-control" name="rolename" required >
-            <div class="required-icon">
-              
-            </div>
-        </div>
-        <p></p>
-        <div class="required-field-block">
-        <div id="pac-container">
-          <input id="pac-input" type="text" placeholder="Location -required"  class="form-control" name="locationname" required>
-          <div class="required-icon">
-          <p></p>
-       
-          <button class="btn" id="save_item" value ="save_item"  name= "save_item" type="button" id= "Save_Click" onclick= "save_check()">Save Search</button>
-          <input class="btn" id= "redirect_save" value ="Saved Jobs"  onclick= " window.location.href = '/saved_jobs'; " > </input>
-          <button class="btn" id="excel" value ="excel"  name= "excel" type="Submit" >Download To Excel</button>
-      
-        </div>
-        </div>
-        </div>
-        <div>  </div>
-        
-       
-
-     <!--    <a  href="/saved_jobs"  class="btn" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" > Saved Jobs</a>
-           <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
-        <input class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" type="button" > -->
-        
-        
-        
-            
-        </div>
-      </div>
-    </div>
- 
-    <div id="loading"></div>
-        <div id="content"> 
-           <div class="spinner-border"  style="float: center; line-height: 5; "role="status">
-           <span class="sr-only">Loading...</span>
-           </div> 
-       </div>
-   </div>  
+    
   </header>
+
+  <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+        <br>  </br>
+
+  
+    <div class="required-field-block">
+        <input type="text" id="role_id" placeholder="Role - required"  class="form-control" name="rolename" required >
+        <div class="required-icon">
+          
+        </div>
+    </div>
+    <p></p>
+    <div class="required-field-block">
+    <div id="pac-container">
+      <input id="pac-input" type="text" placeholder="Location -required"  class="form-control" name="locationname" required>
+      <div class="required-icon">
+      <p></p>
+   
+  
+    </div>
+    </div>
+    </div>
+    <div>  </div>
+
+    <div class="form-group time_zone required user_tz"><select class="form-control time_zone required" name="optionsname" id="optionsID"><option value="">Select a Job Search Engine</option>
+      <option name= "monster" value="monster">Monster</option>
+      <option name= "glass" value="glass">Simply Hired</option>
+      <option name= "career" value="career">Career Builder</option>
+      <option name= "link"   value="link">Linkedin</option> 
+     </select></div>
+
+     
+     <button class="btn" id="save_item" value ="save_item"  name= "save_item" type="button" id= "Save_Click" onclick= "save_check()">Save Search</button>
+     <input class="btn" id= "redirect_save" value ="Saved Jobs"  onclick= " window.location.href = '/saved_jobs'; " > </input>
+     <button class="btn" id="excel" value ="excel"  name= "excel" type="Submit" >Download To Excel</button>
+     <button class="btn" id="search" value ="search"  name= "search" onclick= "loading()"  type="Submit" >Search</button>
+ 
+   
+
+ <!--    <a  href="/saved_jobs"  class="btn" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" > Saved Jobs</a>
+       <a  href="/loginpage" class="btn btn-info"  type="submit" value="Login"    id=login name=direct_login style="float: right; margin-left: 5%;" > Login</a>
+    <input class="btn btn-info" type="submit" id="redirect_save" value ="Go to Saved Jobs"  name= "redirect_save" type="button" > -->
+    
+    
+    
+        
+    </div>
+  </div>
+</div>
+
+<div id="loading"></div>
+    <div id="content"> 
+       <div class="spinner-border"  style="float: center; line-height: 5; "role="status">
+       <span class="sr-only">Loading...</span>
+       </div> 
+   </div>
+</div>  
   <div class="col-xl-9 mx-auto">
   <div class="buttonclass">
-    <div>Click an Image</div>
   <!--  <input  type="image" name= "indeed"  id="indeed_button"  value="indeed_submit" src="/static/indeedlogo.png"    onclick= "loading()" width="120" height="120" >-->
-    <input type="image"  name= "monster"  id="monster_button" src="/static/monsterlogo.png" value="monster_submit"  onclick= "loading()"  width="70" height="70">
-    <input type="image"  name= "glass"  id="glass_button" src="/static/glass.png" value="glass_submit"  onclick= "loading()"  width="100" height="100">
-    <input type="image"  name= "career"  id="simply_button" src="/static/simplyhired.png" value="simply_submit"  onclick= "loading()"  width="200" height="200"> 
-    <input type="image"  name= "link"  id="link_button" src="/static/link.png" value="link_submit"  onclick= "loading()"  width="100" height="100"> 
-    <p></p>
+ 
+ <!-- 
+  <img type="image"  name= "monster"  id="monster_button" src="/static/monsterlogo.png" value="monster_submit"  width="70" height="70">
+  <img type="image"  name= "glass"  id="glass_button" src="/static/glass.png" value="glass_submit"    width="100" height="100">
+  <img type="image"  name= "career"  id="simply_button" src="/static/simplyhired.png" value="simply_submit"   width="200" height="200"> 
+  <img  type="image"  name= "link"  id="link_button" src="/static/link.png" value="link_submit"    width="100" height="100"> 
+    <p></p>-->
     
 
      <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>

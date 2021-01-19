@@ -81,24 +81,21 @@ def index(request):
         request.session['role'], request.session['location']=resp['rolename'] , resp['locationname']
         role, location =request.session['role'], request.session['location']
         print(' the request post' , request.POST.keys() ) ; 
-        if any('.x' in k for k in resp.keys()):
-            if 'indeed.x' in resp.keys():
+        print(request.POST.get("optionsname"))
+        jobengine=request.POST.get("optionsname")
+        if jobengine:
+            if 'indeed' in jobengine:
                 ret=Indeed().getrole(role, location)
-                request.session['site']=str(list(resp.keys())[-1])
-            elif 'monster.x' in resp.keys():
+            elif 'monster' in jobengine:
                 ret=run(async_monster.getrole_monster(role, location))
-                request.session['site']=str(list(resp.keys())[-1])
-            elif 'career.x' in resp.keys():
+            elif 'career' in jobengine:
                 ret=builder.getrole_career(role,location) 
-                request.session['site']=str(list(resp.keys())[-1])
-            elif 'glass.x' in resp.keys():
+            elif 'glass' in jobengine:
                 ret=multiprocess_simply.getrole_simply(role,location)
-                request.session['site']=str(list(resp.keys())[-1])
-            elif 'link.x' in resp.keys():
+            elif 'link' in jobengine:
                 ret=linkedin.start(role, location)
-                request.session['site']=str(list(resp.keys())[-1])
-                print(' link ret is ' , ret)
             request.session['hold_data']=ret
+        request.session['site']=jobengine
         if'excel' in resp.keys():
             try:
                 return excel_download(request, request.session['hold_data'],  API )
