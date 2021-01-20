@@ -13,7 +13,7 @@ import urllib.request
 import json
 from bs4 import BeautifulSoup
 from threading import Thread
-from indeed_refactor import Indeed
+from .indeed_refactor import Indeed
 
 def scrape( all_data , url, location, proxies):
     try:
