@@ -14,15 +14,6 @@ class Indeed():
     def __init__(self):
         self.desc={}
 
-
-    def get_session(self, proxies):
-        # construct an HTTP session
-        session = requests.Session()
-        # choose one random proxy
-        proxy = random.choice(proxies)
-        #session.proxies = 
-        return {"http": proxy, "https": proxy}
-
     def get_indeed(self,  url, role ,proxies ):
         global i
         global all_data
@@ -34,12 +25,12 @@ class Indeed():
             response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'} , timeout= 7)
             soup = BeautifulSoup(response.text, 'html.parser')
             entire_container= soup.find_all  ('div' ,  {'class' : ['jobsearch-SerpJobCard unifiedRow row result' ] })
-            if not entire_container:
-                print("nothing in here ")
-                return "blank"
+           
         except requests.exceptions.ProxyError:
             return
         except requests.exceptions.ConnectTimeout:
+            return
+        except requests.exceptions.ConnectionError:
             return
 
 
@@ -79,7 +70,6 @@ class Indeed():
         for t in threads:
             t.join()
         #cleaning the data
-        print(all_data)
         for k, v in all_data.items():
             if k not in dups:
                 result[k]=v 
@@ -87,7 +77,8 @@ class Indeed():
         all_data.clear()
         return result
 
-    def getproxies(self):
+    @staticmethod
+    def getproxies():
         url = "https://free-proxy-list.net/"
         soup = BeautifulSoup(requests.get(url).content, "html.parser")
         proxies = []
@@ -101,6 +92,12 @@ class Indeed():
             except IndexError:
                 continue
         return proxies
+    @staticmethod
+    def get_session( proxies):
+        # construct an HTTP session
+        session = requests.Session()
+        proxy = random.choice(proxies)
+        return {"http": proxy, "https": proxy}
 
 
 

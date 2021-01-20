@@ -13,16 +13,21 @@ import urllib.request
 import json
 from bs4 import BeautifulSoup
 from threading import Thread
+from indeed_refactor import Indeed
 
-
-def scrape( all_data , url, location):
-
-    response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    #content_container= soup.find_all('a', {'class': ["result-card__full-card-link"]})
-    content_container= soup.find_all('li', {'class': [  "result-card job-result-card result-card--with-hover-state"]})
-
+def scrape( all_data , url, location, proxies):
+    try:
+        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'} , proxies=proxies, timeout= 7)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        #content_container= soup.find_all('a', {'class': ["result-card__full-card-link"]})
+        content_container= soup.find_all('li', {'class': [  "result-card job-result-card result-card--with-hover-state"]})
+    except requests.exceptions.ProxyError:
+        return
+    except requests.exceptions.ConnectTimeout:
+        return
+    except requests.exceptions.ConnectionError:
+        return
     for x, i in enumerate(content_container):
         try:
             title=i.a.span.text
@@ -38,8 +43,9 @@ def scrape( all_data , url, location):
 
 def start(role , location):
     all_data={}
+    allproxies=Indeed().getproxies()
     url= "https://www.linkedin.com/jobs/search?keywords="+ role + "&location=" + location+"&trk=public_jobs_jobs-search-bar_search-submit&redirect=false&position=1&pageNum="
-    threads= [ Thread(target=scrape, args=( all_data,  url +str(n) , role  ),daemon=True) for n in range(1, 10)]
+    threads= [ Thread(target=scrape, args=( all_data,  url +str(n) , role , Indeed().get_session(allproxies)  ),daemon=True) for n in range(1, 10)]
     for t in threads:
         t.start()
     for t in threads:
