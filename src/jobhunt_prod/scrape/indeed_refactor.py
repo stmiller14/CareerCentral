@@ -7,20 +7,39 @@ no need for class but whatever..coulda just used func design
 import requests
 from bs4 import BeautifulSoup
 from threading import Thread
-
+import random
 all_data={}
 i=0
 class Indeed():
     def __init__(self):
         self.desc={}
 
-    def get_indeed(self,  url, role):
+
+    def get_session(self, proxies):
+        # construct an HTTP session
+        session = requests.Session()
+        # choose one random proxy
+        proxy = random.choice(proxies)
+        #session.proxies = 
+        return {"http": proxy, "https": proxy}
+
+    def get_indeed(self,  url, role ,proxies ):
         global i
         global all_data
+
+        
         header_link='https://www.indeed.com'
-        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-        soup = BeautifulSoup(response.text, 'html.parser')
-        entire_container= soup.find_all  ('div' ,  {'class' : ['jobsearch-SerpJobCard unifiedRow row result' ] })
+
+        try:
+            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'})
+            soup = BeautifulSoup(response.text, 'html.parser')
+            entire_container= soup.find_all  ('div' ,  {'class' : ['jobsearch-SerpJobCard unifiedRow row result' ] })
+            if not entire_container:
+                print("nothing in here ")
+                return "blank"
+        except requests.exceptions.ProxyError:
+            return
+
 
         for  data  in entire_container:
             ID= data.attrs['id']
@@ -50,14 +69,15 @@ class Indeed():
                 location= location[0].strip()+ "," + location[1].strip()
         url_first='https://www.indeed.com/jobs?q=' +role +'&l=' + location
         url='https://www.indeed.com/jobs?q=' +role +'&l=' + location + "&start="
-        threads= [ Thread(target=Indeed().get_indeed, args=( url +str(n) , role ),daemon=True) for n in range(1, 20)]
-        threads.append(Thread(target=Indeed().get_indeed,  args=( url_first , role  ),daemon=True))
+        allproxies=self.getproxies()
+        threads= [ Thread(target=Indeed().get_indeed, args=( url +str(n) , role, self.get_session(allproxies) ),daemon=True) for n in range(1, 4)]
+        #threads.append(Thread(target=Indeed().get_indeed,  args=( url_first , role, self.get_session(self.getproxies()) ),daemon=True))
         for t in threads:
             t.start()
         for t in threads:
             t.join()
         #cleaning the data
-
+        print(all_data)
         for k, v in all_data.items():
             if k not in dups:
                 result[k]=v 
@@ -65,5 +85,24 @@ class Indeed():
         all_data.clear()
         return result
 
+    def getproxies(self):
+        url = "https://free-proxy-list.net/"
+        soup = BeautifulSoup(requests.get(url).content, "html.parser")
+        proxies = []
+        for row in soup.find("table", attrs={"id": "proxylisttable"}).find_all("tr")[1:]:
+            tds = row.find_all("td")
+            try:
+                ip = tds[0].text.strip()
+                port = tds[1].text.strip()
+                host = f"{ip}:{port}"
+                proxies.append(host)
+            except IndexError:
+                continue
+        return proxies
+
+
+
+
 if __name__ == "__main__":
     Indeed().getrole('python', 'new york')
+    #Indeed().getproxies()

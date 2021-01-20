@@ -84,7 +84,7 @@ def index(request):
         print(request.POST.get("optionsname"))
         jobengine=request.POST.get("optionsname")
         if jobengine:
-            if 'indeed' in jobengine:
+            if 'Indeed' in jobengine:
                 ret=Indeed().getrole(role, location)
             elif 'monster' in jobengine:
                 ret=run(async_monster.getrole_monster(role, location))
