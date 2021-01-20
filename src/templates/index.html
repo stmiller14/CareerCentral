@@ -438,10 +438,12 @@ content: counter(serial-number ) ".     ";  /* Display the counter */
      <br></br>
      <button class="btn" id="searchID" value ="search"  name= "search" onclick= "loading()"  type="Submit" >Search</button>
  
-     <button class="btn" id="save_item" value ="save_item"  name= "save_item" type="button" id= "Save_Click" onclick= "save_check()">Save Search</button>
+     
     <!--  <input class="btn" id= "redirect_save" value ="Saved Jobs"  onclick= " window.location.href = '/saved_jobs'; " > </input>-->
     {%if results%}
-    <button class="excel-btn" id="excel" value ="excel"  name= "excel" type="Submit" style= 'float:right;'>Download To Excel</button>
+    <button class="excel-btn" id="save_item" value ="save_item"  name= "save_item" type="button" style= 'float:right; ' id= "Save_Click" onclick= "save_check()">Save Search</button>
+    
+    <button class="excel-btn" id="excel" value ="excel"  name= "excel" type="Submit" style= 'float:right; margin-right:16px'>Download To Excel</button>
     {%endif%}
     
    
