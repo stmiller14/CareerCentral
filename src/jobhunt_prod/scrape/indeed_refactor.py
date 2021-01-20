@@ -31,13 +31,15 @@ class Indeed():
         header_link='https://www.indeed.com'
 
         try:
-            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'})
+            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'} , timeout= 7)
             soup = BeautifulSoup(response.text, 'html.parser')
             entire_container= soup.find_all  ('div' ,  {'class' : ['jobsearch-SerpJobCard unifiedRow row result' ] })
             if not entire_container:
                 print("nothing in here ")
                 return "blank"
         except requests.exceptions.ProxyError:
+            return
+        except requests.exceptions.ConnectTimeout:
             return
 
 
@@ -70,8 +72,8 @@ class Indeed():
         url_first='https://www.indeed.com/jobs?q=' +role +'&l=' + location
         url='https://www.indeed.com/jobs?q=' +role +'&l=' + location + "&start="
         allproxies=self.getproxies()
-        threads= [ Thread(target=Indeed().get_indeed, args=( url +str(n) , role, self.get_session(allproxies) ),daemon=True) for n in range(1, 4)]
-        #threads.append(Thread(target=Indeed().get_indeed,  args=( url_first , role, self.get_session(self.getproxies()) ),daemon=True))
+        threads= [ Thread(target=Indeed().get_indeed, args=( url +str(n) , role, self.get_session(allproxies) ),daemon=True) for n in range(1, 20)]
+        threads.append(Thread(target=Indeed().get_indeed,  args=( url_first , role, self.get_session(allproxies) ),daemon=True))
         for t in threads:
             t.start()
         for t in threads:
