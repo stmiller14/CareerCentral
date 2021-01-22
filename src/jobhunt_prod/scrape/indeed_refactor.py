@@ -14,25 +14,41 @@ class Indeed():
     def __init__(self):
         self.desc={}
 
-    def get_indeed(self,  url, role ,proxies ):
+
+    def get_indeed(self,  url, role ,proxies, allproxies, x=0 ):
         global i
         global all_data
-
-        
         header_link='https://www.indeed.com'
-
+        x+=1
+        entire_container=None
         try:
-            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'} , timeout= 7)
+            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'} , timeout= 10)
             soup = BeautifulSoup(response.text, 'html.parser')
             entire_container= soup.find_all  ('div' ,  {'class' : ['jobsearch-SerpJobCard unifiedRow row result' ] })
-           
+        
         except requests.exceptions.ProxyError:
-            return
+            if x<=3:
+                self.get_indeed(  url, role ,self.get_session(allproxies), allproxies , x )
+            else:
+                return
         except requests.exceptions.ConnectTimeout:
-            return
+            if x<=3:
+                self.get_indeed(  url, role ,self.get_session(allproxies), allproxies , x )
+            else:
+                return
         except requests.exceptions.ConnectionError:
-            return
+            if x<=3:
+                self.get_indeed(  url, role ,self.get_session(allproxies), allproxies , x )
+            else:
+                return
+        except requests.exceptions.ReadTimeout:
+            if x<=3:
+                self.get_indeed(  url, role ,self.get_session(allproxies), allproxies , x )
+            else:
+                return
 
+        if not entire_container:
+            return
 
         for  data  in entire_container:
             ID= data.attrs['id']
@@ -63,8 +79,9 @@ class Indeed():
         url_first='https://www.indeed.com/jobs?q=' +role +'&l=' + location
         url='https://www.indeed.com/jobs?q=' +role +'&l=' + location + "&start="
         allproxies=self.getproxies()
-        threads= [ Thread(target=Indeed().get_indeed, args=( url +str(n) , role, self.get_session(allproxies) ),daemon=True) for n in range(1, 20)]
-        threads.append(Thread(target=Indeed().get_indeed,  args=( url_first , role, self.get_session(allproxies) ),daemon=True))
+        print(allproxies[1])
+        threads= [ Thread(target=Indeed().get_indeed, args=( url +str(n) , role, self.get_session(allproxies), allproxies ),daemon=True) for n in range(1, 10)]
+        threads.append(Thread(target=Indeed().get_indeed,  args=( url_first , role, self.get_session(allproxies), allproxies ),daemon=True))
         for t in threads:
             t.start()
         for t in threads:
@@ -77,6 +94,7 @@ class Indeed():
         all_data.clear()
         return result
 
+    #Utility methods for proxies 
     @staticmethod
     def getproxies():
         url = "https://free-proxy-list.net/"
@@ -94,9 +112,8 @@ class Indeed():
         return proxies
     @staticmethod
     def get_session( proxies):
-        # construct an HTTP session
-        session = requests.Session()
         proxy = random.choice(proxies)
+        #yield {"http": proxy, "https": proxy}
         return {"http": proxy, "https": proxy}
 
 

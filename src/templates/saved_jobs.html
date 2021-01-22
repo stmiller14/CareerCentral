@@ -32,8 +32,6 @@
 
 
 
-
-
 </style>
 
 <!-- 
@@ -92,7 +90,7 @@ function delete_jobs(){
                                             {% if "http" in col %}
                                             {% with col=col.strip%}
                                            <td>  <a href= {{col}}   id='url_link' target="_blank" >Click to apply</a> </td>
-                                           <td> <input type="button" class="btn btn-info" id={{col}}  name="delete_job"  onclick = "delete_jobs()" value=Delete >  </td>
+                                           <td> <input type="button" class="btn" id={{col}}  type="button"style="color:blue;"  name="delete_job"  onclick = "delete_jobs()" value=Delete >  </td>
                                           {%endwith%}
                                            {%else %}   
                                               

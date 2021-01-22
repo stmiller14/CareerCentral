@@ -45,7 +45,7 @@ def start(role , location):
     all_data={}
     allproxies=Indeed().getproxies()
     url= "https://www.linkedin.com/jobs/search?keywords="+ role + "&location=" + location+"&trk=public_jobs_jobs-search-bar_search-submit&redirect=false&position=1&pageNum="
-    threads= [ Thread(target=scrape, args=( all_data,  url +str(n) , role , Indeed().get_session(allproxies)  ),daemon=True) for n in range(1, 10)]
+    threads= [ Thread(target=scrape, args=( all_data,  url +str(n) , role , Indeed().get_session(allproxies)  ),daemon=True) for n in range(1, 20)]
     for t in threads:
         t.start()
     for t in threads:
