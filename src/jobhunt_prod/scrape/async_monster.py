@@ -32,6 +32,7 @@ async def get_monster(url, role):
                     alldata[str(i) +   href] =[title,href, company, location, date]
 
 async def getrole_monster(role, location):
+    location=location.replace(" ","%20")
     locate=location
     rawdata, result={}, {}
     if "," in location:
@@ -39,8 +40,7 @@ async def getrole_monster(role, location):
         if len(location)>=2:
             locate= location[0].strip()+ "," + location[1].strip()
                  
-    url='https://www.monster.com/jobs/search/?q= ' +role+ '&where='+locate+' &stpage='
-    url_end="&page=" 
+   
     '''
     await gather(
         get_monster(url + str(1) +url_end+str(1),  role ),
@@ -52,15 +52,21 @@ async def getrole_monster(role, location):
         get_monster(url + str(7) +url_end+str(7), role), 
     )
     '''
+    temprole=role
+    role=role.replace(" ","%20")
+    
     url='https://www.monster.com/jobs/search?q=%20' + role + '&amp;where=' 
     url_end='&amp;page='
+    url='https://www.monster.com/jobs/search/?q=%20' +role+ '&where='+locate+'%20&stpage='
+    url_end="%20&page=" 
+    print(url + str(1) +url_end + str(1))
     await gather(
-        get_monster( url + str(1) +url_end + str(1) ,  role ),
-        get_monster( url + str(2) +url_end + str(2) ,  role ),
-        get_monster( url + str(3) +url_end + str(3) ,  role ),
-        get_monster( url + str(4) +url_end + str(4) ,  role ),
-        get_monster( url + str(5) +url_end + str(5) ,  role ),
-        get_monster( url + str(6) +url_end + str(6) ,  role )
+        get_monster( url + str(1) +url_end + str(1) ,  temprole ),
+        get_monster( url + str(2) +url_end + str(2) ,  temprole ),
+        get_monster( url + str(3) +url_end + str(3) ,  temprole ),
+        get_monster( url + str(4) +url_end + str(4) ,  temprole ),
+        get_monster( url + str(5) +url_end + str(5) ,  temprole ),
+        get_monster( url + str(6) +url_end + str(6) ,  temprole )
         
 
     )
