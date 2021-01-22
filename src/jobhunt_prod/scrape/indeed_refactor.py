@@ -1,6 +1,8 @@
 '''
 Indeed scrape with multi thread design
 no need for class but whatever..coulda just used func design
+
+need to connect to public proxies 
 '''
 
 
@@ -22,7 +24,7 @@ class Indeed():
         x+=1
         entire_container=None
         try:
-            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'} , timeout= 10)
+            response = requests.get(url, proxies=proxies ,  headers={'User-Agent': 'Mozilla/5.0'} , timeout= 5)
             soup = BeautifulSoup(response.text, 'html.parser')
             entire_container= soup.find_all  ('div' ,  {'class' : ['jobsearch-SerpJobCard unifiedRow row result' ] })
         

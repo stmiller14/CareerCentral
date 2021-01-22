@@ -59,7 +59,7 @@ async def getrole_monster(role, location):
     url_end='&amp;page='
     url='https://www.monster.com/jobs/search/?q=%20' +role+ '&where='+locate+'%20&stpage='
     url_end="%20&page=" 
-    print(url + str(1) +url_end + str(1))
+    '''  Fix monster url bug   '''
     await gather(
         get_monster( url + str(1) +url_end + str(1) ,  temprole ),
         get_monster( url + str(2) +url_end + str(2) ,  temprole ),
